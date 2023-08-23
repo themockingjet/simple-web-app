@@ -1,0 +1,3 @@
+#d-sidenav li:has(> a.active) {
+    background-color: #2563eb;
+}

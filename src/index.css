@@ -10,3 +10,7 @@
         box-shadow: theme("boxShadow.xl");
     }
 }
+
+.active {
+    @apply bg-blue-500 rounded-lg text-white;
+}
