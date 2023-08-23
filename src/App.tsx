@@ -4,7 +4,7 @@
 
 import { BrowserRouter, Navigate, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
-import Layout from "./components/Layout";
+import Layout from "./components/Layout/Layout";
 import Login from "./pages/Login";
 import Reservation from "./pages/Reservation";
 export default function App() {

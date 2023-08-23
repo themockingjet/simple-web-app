@@ -43,6 +43,7 @@ const FormInputDate = ({ id, name, label, validation, ...props }: FormInputDateP
                     rules={validation}
                     render={({ field }) => (
                         <DatePicker
+                            id={id}
                             className={cn(
                                 "w-full px-3 py-2 shadow-sm border focus:outline-none h-8 md:h-10 2xl:h-14 disabled:bg-gray-200",
                                 props.inputClassName
