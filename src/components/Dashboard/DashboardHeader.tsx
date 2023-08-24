@@ -4,11 +4,18 @@
 
 import { useMediaQuery } from "@uidotdev/usehooks";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
+import { menuItems } from "../../utils/adminNavbarItems";
+import { cn } from "../../utils/utils";
 
 const DashboardHeader = () => {
     const [show, setShow] = useState<boolean>(false);
-    const isLargeDevice = useMediaQuery("only screen and (min-width : 993px)");
+    const curLocation = useLocation();
+
+    let curDirectory = menuItems.filter((item) => item.path === curLocation.pathname.split("/")[2])[0];
+    const handleMiniDropDownLink = () => {
+        setShow((prev) => !prev);
+    };
 
     const handleDropDownLink = () => {
         setShow((prev) => !prev);
@@ -69,7 +76,24 @@ const DashboardHeader = () => {
                         </div>
                     </div>
                 </div>
+                {/* For SM screen */}
+                <div className="flex w-full h-full justify-center items-stretch">
+                    <button onClick={handleMiniDropDownLink} className="w-full text-blue-500 font-bold text-xl">
+                        {curDirectory.title}
+                    </button>
+                </div>
             </header>
+            <div
+                className={`z-50 absolute top-[3rem] flex flex-col w-full py-1 bg-white font-bold text-xl drop-shadow-md ${
+                    show ? "" : "hidden"
+                }`}
+            >
+                {menuItems.map((item, index) => (
+                    <NavLink to={item.path} key={index} className="flex justify-center" onClick={handleMiniDropDownLink}>
+                        {({ isActive }: any) => <span className={isActive ? "hidden" : "block"}>{item.title}</span>}
+                    </NavLink>
+                ))}
+            </div>
         </>
     );
 };
