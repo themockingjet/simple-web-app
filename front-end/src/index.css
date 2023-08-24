@@ -11,10 +11,6 @@
     }
 }
 
-/* .active {
-    @apply bg-blue-500 rounded-lg text-white;
-} */
-
-NavLink.active {
+.active {
     @apply bg-blue-500 rounded-lg text-white;
 }

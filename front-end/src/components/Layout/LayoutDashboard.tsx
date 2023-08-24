@@ -19,7 +19,7 @@ const LayoutDashboard = () => {
     return (
         <>
             <DashboardHeader />
-            <div className="flex flex-row container mx-auto my-4 max-h-[calc(100vh-5rem)] lg:max-h-[calc(100vh-6rem)] h-screen">
+            <div className="flex flex-row container mx-auto my-4 h-full">
                 {!isLargeDevice && !isShown && <DashboardSidenav />}
                 {isLargeDevice && isShown && <DashboardSidenav />}
                 <Outlet />

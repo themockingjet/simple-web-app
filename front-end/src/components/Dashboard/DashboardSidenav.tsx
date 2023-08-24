@@ -17,7 +17,10 @@ const DashboardSidenav = ({ className }: DashboardSidenavProps) => {
         <>
             <div
                 id="d-sidenav"
-                className={cn("card w-[250px] shrink-0 absolute md:static border border-gray-200 drop-shadow-md", className)}
+                className={cn(
+                    "card w-[250px] max-h-[calc(100vh-5rem)] lg:max-h-[calc(100vh-6rem)] shrink-0 absolute md:static border border-gray-200 drop-shadow-md",
+                    className
+                )}
             >
                 <nav className="h-full">
                     <div className="h-full flex flex-col gap-3 font-semi lg:text-xl">
