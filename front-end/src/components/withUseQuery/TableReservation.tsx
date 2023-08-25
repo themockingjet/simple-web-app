@@ -4,7 +4,7 @@
 
 import { usePagination } from "@mantine/hooks";
 import { Pagination } from "@mantine/core";
-import { fetchReservations } from "../../fetchers/reservation";
+import { fetchReservations } from "../../api/reservation";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 

@@ -13,7 +13,7 @@ interface FormInputProps {
     label: string;
     type?: string;
     validation?: {
-        required: {
+        required?: {
             value: boolean;
             message: string;
         };
@@ -22,6 +22,7 @@ interface FormInputProps {
             message: string;
         };
     };
+    pass?: string;
     divClassName?: string;
     labelClassName?: string;
     inputClassName?: string;
@@ -33,6 +34,7 @@ const FormInput = ({ id, name, label, validation, ...props }: FormInputProps) =>
     const {
         register,
         formState: { errors },
+        watch,
     } = useFormContext();
 
     return (
@@ -40,24 +42,53 @@ const FormInput = ({ id, name, label, validation, ...props }: FormInputProps) =>
             <label htmlFor={id} className={cn("w-full", props.labelClassName)}>
                 {label}
             </label>
-            <Input
-                id={id}
-                className={cn(
-                    "w-full px-3 shadow-sm border outline-none h-8 md:h-10 2xl:h-14 border border-red-100",
-                    props.inputClassName
-                )}
-                type={props.type}
-                {...register(name, validation)}
-            />
-            {errors[name] && (
-                <p
-                    className={cn(
-                        "text-sm text-red-500 bg-red-100 rounded-md font-bold text-center mt-2",
-                        props.errorClassName
+            {name === "confirm_password" ? (
+                <>
+                    <Input
+                        id={id}
+                        className={cn(
+                            "w-full px-3 shadow-sm border outline-none h-8 md:h-10 2xl:h-14 border border-red-100",
+                            props.inputClassName
+                        )}
+                        type={props.type}
+                        {...register(name, {
+                            required: { value: true, message: "Required" },
+                            validate: (value) => value === watch("password") || "Passwords do not match",
+                        })}
+                    />
+                    {errors[name] && (
+                        <p
+                            className={cn(
+                                "text-sm text-red-500 bg-red-100 rounded-md tracking-tighter text-center mt-1",
+                                props.errorClassName
+                            )}
+                        >
+                            <>{errors[name]?.message}</>
+                        </p>
                     )}
-                >
-                    <>{errors[name]?.message}</>
-                </p>
+                </>
+            ) : (
+                <>
+                    <Input
+                        id={id}
+                        className={cn(
+                            "w-full px-3 shadow-sm border outline-none h-8 md:h-10 2xl:h-14 border border-red-100",
+                            props.inputClassName
+                        )}
+                        type={props.type}
+                        {...register(name, validation)}
+                    />
+                    {errors[name] && (
+                        <p
+                            className={cn(
+                                "text-sm text-red-500 bg-red-100 rounded-md tracking-tighter text-center mt-1",
+                                props.errorClassName
+                            )}
+                        >
+                            <>{errors[name]?.message}</>
+                        </p>
+                    )}
+                </>
             )}
         </div>
     );

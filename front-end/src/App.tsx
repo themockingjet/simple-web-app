@@ -11,6 +11,7 @@ import LayoutDashboard from "./components/Layout/LayoutDashboard";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminReservations from "./pages/admin/AdminReservations";
 import AdminUsers from "./pages/admin/AdminUsers";
+import Register from "./pages/Register";
 
 export default function App() {
     return (
@@ -19,7 +20,7 @@ export default function App() {
                 <Route path="/" element={<Layout />}>
                     <Route index element={<Home />} />
                     <Route path="login" element={<Login />} />
-                    <Route path="reservation" element={<Reservation />} />
+                    <Route path="register" element={<Register />} />
                 </Route>
                 <Route path="/admin" element={<LayoutDashboard />}>
                     <Route path="dashboard" element={<AdminDashboard />} />

@@ -29,13 +29,13 @@ const Header = () => {
 
                         <div className="flex">
                             <div className="text-xl lg:text-xl text-blue-500">
-                                <Link to="/" className="left-0 px-2 font-bold hover:text-blue-700">
+                                <Link to="login" className="left-0 px-2 font-bold hover:text-blue-700">
                                     Login
                                 </Link>
                             </div>
                             <div className="text-xl lg:text-xl text-blue-500">
-                                <Link to="/reservation" className="left-0 px-2 font-bold hover:text-blue-700">
-                                    Book Reservation
+                                <Link to="register" className="left-0 px-2 font-bold hover:text-blue-700">
+                                    Register
                                 </Link>
                             </div>
                         </div>

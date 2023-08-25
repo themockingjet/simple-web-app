@@ -2,23 +2,7 @@
 //
 //
 
-import axios from "axios";
-
-export const usernameValidation = {
-    id: "username",
-    name: "username",
-    label: "Username:",
-    validation: {
-        required: {
-            value: true,
-            message: "Required",
-        },
-        pattern: {
-            value: /^([^()/<>[\]\\,'|\x22]+)$/,
-            message: "Invalid input",
-        },
-    },
-};
+import axios from "../api/axios";
 
 export const passwordValidation = {
     id: "password",

@@ -28,7 +28,9 @@ const DashboardHeader = () => {
                 <div className="h-full w-full hidden lg:block">
                     <div className="flex h-full w-full justify-between items-center px-4">
                         <div className="flex h-full w-full justify-between items-center px-2 text-3xl font-bold text-blue-500">
-                            #WebApp
+                            <Link to="/admin/dashboard" className="left-0 px-2 font-bold hover:text-blue-700">
+                                #WebApp
+                            </Link>
                         </div>
                         <div className="flex flex-row justify-between hidden lg:block">
                             {/* left */}

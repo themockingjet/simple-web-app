@@ -2,13 +2,15 @@
 //
 //
 
+import axios from "../api/axios";
 import { Link } from "react-router-dom";
 import FormReservation from "../components/Forms/FormReservation";
 import { FormProvider, useForm } from "react-hook-form";
-import axios from "axios";
+import { useEffect, useState } from "react";
 
 const Reservation = () => {
     //
+    const [user, setUser] = useState();
     const methods = useForm();
     const onSubmit = methods.handleSubmit((data) => {
         axios.post("http://localhost:5000/auth/login", data).then((response) => {
@@ -16,6 +18,31 @@ const Reservation = () => {
             window.location.href = "/";
         });
     });
+
+    useEffect(() => {
+        let isMounted = true;
+        const controller = new AbortController();
+
+        const getUsers = async () => {
+            try {
+                const response = await axios.get("/users", {
+                    signal: controller.signal,
+                });
+                console.log(response.data);
+                isMounted && setUser(response.data);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        getUsers();
+
+        return () => {
+            isMounted = false;
+            controller.abort();
+        };
+    }, []);
+
     return (
         <>
             <div className="container mx-auto min-h-[calc(100vh-3rem)] lg:max-h-[calc(100vh-3.5rem)] h-full lg:h-screen">
