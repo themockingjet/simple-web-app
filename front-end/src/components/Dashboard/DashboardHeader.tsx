@@ -2,11 +2,9 @@
 //
 //
 
-import { useMediaQuery } from "@uidotdev/usehooks";
 import { useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
-import { menuItems } from "../../utils/adminNavbarItems";
-import { cn } from "../../utils/utils";
+import { menuItems } from "../../utils/NavbarAdminItems";
 
 const DashboardHeader = () => {
     const [show, setShow] = useState<boolean>(false);

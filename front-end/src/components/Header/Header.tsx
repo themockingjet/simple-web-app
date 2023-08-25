@@ -4,6 +4,7 @@
 
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { menuItems } from "../../utils/NavbarHomeItems";
 
 const Header = () => {
     const [show, setShow] = useState<boolean>(false);
@@ -81,34 +82,18 @@ const Header = () => {
                         </button>
                     </nav>
                 </div>
-                <div
-                    className={`z-50 absolute flex flex-col w-full gap-1 bg-white border border-gray-300 md:hidden block ${
-                        show ? "" : "hidden"
-                    }`}
-                >
-                    <Link
-                        to="/about"
-                        className="w-full text-center font-bold text-xl hover:text-blue-300"
-                        onClick={handleDropDownLink}
-                    >
-                        About
-                    </Link>
-                    <Link
-                        to="/login"
-                        className="w-full text-center font-bold text-xl hover:text-blue-300"
-                        onClick={handleDropDownLink}
-                    >
-                        Login
-                    </Link>
-                    <Link
-                        to="/reservation"
-                        className="w-full text-center font-bold text-xl hover:text-blue-300"
-                        onClick={handleDropDownLink}
-                    >
-                        Book Reservation
-                    </Link>
-                </div>
             </header>
+            <div
+                className={`z-50 absolute top-[3rem] flex flex-col w-full py-1 bg-white font-bold text-xl drop-shadow-md ${
+                    show ? "" : "hidden"
+                }`}
+            >
+                {menuItems.map((item, index) => (
+                    <Link to={item.path} key={index} className="flex justify-center" onClick={handleDropDownLink}>
+                        {item.title}
+                    </Link>
+                ))}
+            </div>
         </>
     );
 };
