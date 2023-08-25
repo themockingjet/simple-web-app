@@ -9,7 +9,7 @@ import { menuItems } from "../../utils/NavbarAdminItems";
 const DashboardHeader = () => {
     const [show, setShow] = useState<boolean>(false);
     const curLocation = useLocation();
-
+    console.log(curLocation);
     let curDirectory = menuItems.filter((item) => item.path === curLocation.pathname.split("/")[2])[0];
     const handleMiniDropDownLink = () => {
         setShow((prev) => !prev);
