@@ -11,12 +11,9 @@ import { useAuth } from "../hooks/useAuth";
 const Login = () => {
     //
     const [serverResponse, setServerResponse] = useState({ status: "", message: "" });
-
-    const { login, cookies } = useAuth();
+    const { login } = useAuth();
 
     const methods = useForm();
-
-    console.log(cookies);
 
     const onSubmit = methods.handleSubmit(async (data) => {
         try {

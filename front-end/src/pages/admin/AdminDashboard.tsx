@@ -3,20 +3,32 @@
 //
 
 // import TableReservation from "../../components/withUseQuery/TableReservation";
-import { useEffect } from "react";
-import { axiosAuth } from "../../api/axios";
-import { useAuth } from "../../hooks/useAuth";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 const queryClient = new QueryClient();
 
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 const AdminDashboard = () => {
     //
-    const { cookies } = useAuth();
+    const axiosPrivate = useAxiosPrivate();
 
-    useEffect(() => {
-        console.log(cookies);
-    }, []);
+    async function handleClick() {
+        try {
+            const res = await axiosPrivate.get("/api/user/test");
+
+            if (res) {
+                console.log(res.data);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    return (
+        <>
+            <button onClick={handleClick}>refresh</button>
+        </>
+    );
 
     return (
         <>

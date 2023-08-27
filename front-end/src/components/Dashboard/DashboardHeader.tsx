@@ -20,7 +20,7 @@ const DashboardHeader = () => {
     const handleLogout = async () => {
         //
         try {
-            const response = await axios.post("/auth/logout");
+            const response = await axios.get("/auth/logout");
 
             if (response) {
                 logout();
