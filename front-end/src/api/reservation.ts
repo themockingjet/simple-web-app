@@ -2,9 +2,9 @@
 //
 //
 
-import axios from "./axios";
+import { axiosAuth } from "./axios";
 
 export const fetchReservations = async () => {
-    const response = await axios.get("/api/reservations").then((res) => res.data);
+    const response = await axiosAuth.get("/api/reservations").then((res) => res.data);
     return response;
 };

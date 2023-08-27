@@ -2,7 +2,7 @@
 //
 //
 
-import axios from "../api/axios";
+// import axios from "../api/axios";
 
 export const passwordValidation = {
     id: "password",
@@ -17,10 +17,10 @@ export const passwordValidation = {
     },
 };
 
-export const setAuthToken = (token: string) => {
-    if (token) {
-        axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-    } else {
-        delete axios.defaults.headers.common["Authorization"];
-    }
-};
+// export const setAuthToken = (token: string) => {
+//     if (token) {
+//         axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+//     } else {
+//         delete axios.defaults.headers.common["Authorization"];
+//     }
+// };

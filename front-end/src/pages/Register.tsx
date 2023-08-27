@@ -12,18 +12,26 @@ const Register = () => {
     const [serverResponse, setServerResponse] = useState({ status: "", message: "" });
 
     const onSubmit = methods.handleSubmit((data) => {
-        console.log(data);
-        axios
-            .post("/api/user/create", data)
-            .then((response) => {
-                if (response.status === 200) {
-                    methods.reset();
-                    setServerResponse({ status: "success", message: response.data.message });
-                }
-            })
-            .catch((error) => {
+        try {
+            axios
+                .post("register", JSON.stringify(data), {
+                    headers: { "Content-Type": "application/json", withCredentials: true },
+                })
+                .then((response) => {
+                    if (response.status === 200) {
+                        methods.reset();
+                        setServerResponse({ status: "success", message: response.data.message });
+                    }
+                });
+        } catch (error: any) {
+            if (!error.response) {
+                setServerResponse({ status: "error", message: "No Server Response" });
+            } else if (error.response.status === 409) {
                 setServerResponse({ status: "error", message: error.response.data.message });
-            });
+            } else {
+                setServerResponse({ status: "error", message: "Registration failed" });
+            }
+        }
 
         setTimeout(() => {
             setServerResponse({ status: "", message: "" });

@@ -2,11 +2,15 @@
 //
 //
 
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import TableReservation from "../../components/withUseQuery/TableReservation";
+import { axiosAuth } from "../../api/axios";
+
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 const queryClient = new QueryClient();
 
 const AdminDashboard = () => {
+    //
+
     return (
         <>
             <div className="card lg:ml-2 w-full h-full min-h-[calc(100vh-5rem)] lg:min-h-[calc(100vh-6rem)] border border-gray-200 drop-shadow-md">
@@ -31,9 +35,7 @@ const AdminDashboard = () => {
                     </div>
                     {/* Table 1 */}
                     <div className="container mx-auto overflow-auto min-h-[744px] max-h-[744px] border border-gray-500 rounded-md">
-                        <QueryClientProvider client={queryClient}>
-                            <TableReservation />
-                        </QueryClientProvider>
+                        <QueryClientProvider client={queryClient}>{/* <TableReservation /> */}</QueryClientProvider>
                     </div>
                     {/* Table 2 */}
                     <div className="container mx-auto h-36 overflow-auto"></div>

@@ -7,28 +7,37 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
-
-// Middleware
-// const authenticateToken = require("./middlewares/authMiddleware");
+const errorHandler = require("./middlewares/errorHandler.middleware");
+const authenticateToken = require("./middlewares/auth.middleware");
+const corsOption = require("./config/corsOptions");
+const { logger } = require("./middlewares/eventLogger.middleware");
 
 // Import routes
-const LoginRoutes = require("./routes/auth.routes");
+const AuthRoutes = require("./routes/auth.routes");
+const RegisterRoutes = require("./routes/register.routes");
 const UserRoutes = require("./routes/user.routes");
 
-var corsOption = {
-    origin: ["http://localhost:5173"],
-    optionsSuccessStatus: 200,
-};
+// custom middleware logger
+app.use(logger);
 
-// Set up middleware and static file serving
+// cors middleware
 app.use(cors(corsOption));
+
+// built-in middleware to handle urlencoded data
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cookieParser());
 
-app.use("/auth", LoginRoutes);
+app.use("/auth", AuthRoutes);
+app.use("/register", RegisterRoutes);
+app.use(authenticateToken);
 app.use("/api/user", UserRoutes);
 // app.use("/api/reservations", reservationsRoute);
 // app.use("/api/account", accountRoute);
+
+app.all("*", (req, res) => {
+    res.status(404).send({ message: "Url not found." });
+});
+app.use(errorHandler);
 
 module.exports = app;

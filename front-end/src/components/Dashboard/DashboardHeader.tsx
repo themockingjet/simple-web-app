@@ -5,23 +5,33 @@
 import { useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { menuItems } from "../../utils/NavbarAdminItems";
+import { useAuth } from "../../hooks/useAuth";
+import axios from "../../api/axios";
 
 const DashboardHeader = () => {
     const [show, setShow] = useState<boolean>(false);
+    const [settingsShow, setSettingsShow] = useState<boolean>(false);
+
     const curLocation = useLocation();
-    console.log(curLocation);
     let curDirectory = menuItems.filter((item) => item.path === curLocation.pathname.split("/")[2])[0];
+
+    const { logout } = useAuth();
+
+    const handleLogout = () => {
+        logout();
+    };
+
     const handleMiniDropDownLink = () => {
         setShow((prev) => !prev);
     };
 
     const handleDropDownLink = () => {
-        setShow((prev) => !prev);
+        setSettingsShow((prev) => !prev);
     };
 
     return (
         <>
-            <header className="container mx-auto h-12 lg:h-16 border-b-2 border-blue-500 drop-shadow-md">
+            <header className="container mx-auto h-12 lg:h-16 border-b-2 border-blue-500 drop-shadow-md relative">
                 {/* For LG screen */}
                 <div className="h-full w-full hidden lg:block">
                     <div className="flex h-full w-full justify-between items-center px-4">
@@ -43,6 +53,7 @@ const DashboardHeader = () => {
                                         Role!
                                     </p>
                                 </div>
+                                {/* Profile */}
                                 <button onClick={handleDropDownLink} className="">
                                     <img
                                         className=""
@@ -52,34 +63,23 @@ const DashboardHeader = () => {
                                         alt="user-male-circle"
                                     />
                                 </button>
-                                <div
-                                    className={`z-50 absolute top-[60px] right-0 flex flex-col w-auto gap-1 bg-white px-5 py-2 drop-shadow-md block ${
-                                        show ? "" : "hidden"
-                                    }`}
-                                >
-                                    <Link
-                                        to="/"
-                                        className="w-full text-start font-bold text-base hover:text-blue-300"
-                                        onClick={handleDropDownLink}
-                                    >
-                                        Settings
-                                    </Link>
-                                    <Link
-                                        to="/"
-                                        className="w-full text-start font-bold text-base hover:text-blue-300"
-                                        onClick={handleDropDownLink}
-                                    >
-                                        Logout
-                                    </Link>
-                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 {/* For SM screen */}
-                <div className="flex w-full h-full justify-center items-stretch">
+                <div className="flex w-full h-full justify-center items-stretch block lg:hidden relative">
                     <button onClick={handleMiniDropDownLink} className="w-full text-blue-500 font-bold text-xl">
                         {curDirectory.title}
+                    </button>
+                    <button onClick={handleDropDownLink} className="absolute right-2 inset-y-0">
+                        <img
+                            className=""
+                            width="32"
+                            height="32"
+                            src="https://img.icons8.com/pastel-glyph/64/user-male-circle.png"
+                            alt="user-male-circle"
+                        />
                     </button>
                 </div>
             </header>
@@ -93,6 +93,31 @@ const DashboardHeader = () => {
                         {({ isActive }: any) => <span className={isActive ? "hidden" : "block"}>{item.title}</span>}
                     </NavLink>
                 ))}
+            </div>
+            <div className="container mx-auto relative">
+                <div
+                    className={`z-50 container absolute top-0 right-0 flex flex-col w-auto gap-1 bg-white px-5 py-2 drop-shadow-md block ${
+                        settingsShow ? "" : "hidden"
+                    }`}
+                >
+                    <Link
+                        to="/"
+                        className="w-full text-start font-bold text-base hover:text-blue-300"
+                        onClick={handleDropDownLink}
+                    >
+                        Settings
+                    </Link>
+                    {/* form logout */}
+                    <form
+                        className="w-full text-start font-bold text-base hover:text-blue-300"
+                        onSubmit={(e: any) => {
+                            e.preventDefault();
+                            handleLogout();
+                        }}
+                    >
+                        <input type="submit" value="Logout" />
+                    </form>
+                </div>
             </div>
         </>
     );

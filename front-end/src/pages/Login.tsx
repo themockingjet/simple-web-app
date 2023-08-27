@@ -2,30 +2,37 @@
 //
 //
 
-import { FormProvider, useForm } from "react-hook-form";
 import axios from "../api/axios";
 import FormLogin from "../components/Forms/FormLogin";
+import { FormProvider, useForm } from "react-hook-form";
 import { useState } from "react";
+import { useNavigate, Link, useLocation } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
 
 const Login = () => {
     //
     const [serverResponse, setServerResponse] = useState({ status: "", message: "" });
+
+    const { login } = useAuth();
+
     const methods = useForm();
-    const onSubmit = methods.handleSubmit((data) => {
+
+    const onSubmit = methods.handleSubmit(async (data) => {
         try {
-            axios
-                .post("/auth/login", data)
-                .then((response) => {
-                    setServerResponse({ status: "", message: "" });
-                    if (response.status === 200) {
-                        window.location.href = "/admin/dashboard";
-                    }
-                })
-                .catch((error) => {
-                    setServerResponse({ status: "error", message: error.response.data.message });
-                });
-        } catch (error) {
-            console.log(error);
+            const response = await axios.post("/auth/login", data, { withCredentials: true });
+
+            if (response) {
+                setServerResponse({ status: "", message: "" });
+                login(response.data);
+            }
+        } catch (error: any) {
+            if (!error.response) {
+                setServerResponse({ status: "error", message: "No Server Response" });
+            } else if (error.response?.status === 401) {
+                setServerResponse({ status: "error", message: "Incorrent email or password." });
+            } else {
+                setServerResponse({ status: "error", message: "Login failed." });
+            }
         }
     });
 

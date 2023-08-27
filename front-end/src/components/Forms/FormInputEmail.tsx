@@ -41,16 +41,16 @@ const FormInputEmail = ({ id, name, label, validation, ...props }: FormInputEmai
 
     const validateEmail = async () => {
         try {
-            const res = await axios.post(`api/user/${watch("email")}`);
+            const res = await axios.post(`register/check/${watch("email")}`);
             if (res.status === 200) {
-                if (res.data.user) {
-                    return "Email already exists";
-                } else {
-                    return true;
-                }
+                return true;
             }
         } catch (err: any) {
-            console.log(err);
+            if (!err.response) {
+                alert("No Server Response");
+            } else if (err.response.status === 409) {
+                return err.response.data.message;
+            }
         }
     };
 

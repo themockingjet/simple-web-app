@@ -18,16 +18,29 @@ exports.createUser = async (req, res) => {
     });
 };
 
-exports.findUserByEmail = async (req, res) => {
-    // console.log(req.params.email);
+exports.checkEmailExists = async (req, res) => {
     User.findUserByEmail(req.params.email, (err, result) => {
         if (err) {
             res.status(500).send(err);
         } else {
             if (result.length > 0) {
-                res.status(200).send({ user: result[0].email, message: "User exists." });
+                res.status(409).send({ message: "Email already exists." });
             } else {
-                res.status(200).send({ user: null, message: "User not found." });
+                res.status(200).send();
+            }
+        }
+    });
+};
+
+exports.findUserByEmail = async (req, res) => {
+    User.findUserByEmail(req.params.email, (err, result) => {
+        if (err) {
+            res.status(500).send(err);
+        } else {
+            if (result.length > 0) {
+                res.status(200).send({ message: "Email already exists." });
+            } else {
+                res.status(200).send({ message: "Email does not exist." });
             }
         }
     });

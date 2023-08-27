@@ -2,8 +2,11 @@
 //
 //
 
-import { BrowserRouter, Navigate, Routes, Route } from "react-router-dom";
+import { Navigate, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
+import RequireAuth from "./components/RequireAuth";
+import Anonymous from "./components/Anonymous";
+import Unauthorized from "./pages/Unauthorized";
 
 // Layouts
 import Layout from "./components/Layout/Layout";
@@ -24,26 +27,42 @@ import Welcome from "./pages/user/Welcome";
 export default function App() {
     return (
         <Routes>
-            <Route path="/" element={<Layout />}>
-                <Route path="/" element={<Home />} />
-                <Route path="login" element={<Login />} />
-                <Route path="register" element={<Register />} />
-            </Route>
-            <Route path="/admin">
-                <Route element={<LayoutDashboard />}>
-                    <Route path="dashboard" element={<AdminDashboard />} />
-                    <Route path="reservations" element={<AdminReservations />} />
-                    <Route path="users" element={<AdminUsers />} />
+            <Route element={<Anonymous />}>
+                <Route path="/" element={<Layout />}>
+                    <Route path="/" element={<Home />} />
+                    <Route path="login" element={<Login />} />
+                    <Route path="register" element={<Register />} />
                 </Route>
-                <Route path="/admin" element={<Navigate to="dashboard" replace />} />
             </Route>
-            <Route path="/user">
-                <Route element={<LayoutDashboard />}>
-                    <Route path="dashboard" element={<Welcome />} />
-                    {/* <Route path="schedule" element={<AdminReservations />} /> */}
+
+            {/* admin */}
+            {/* <AuthProvider> */}
+            <Route element={<RequireAuth allowedRoles={[1]} />}>
+                <Route path="/admin">
+                    <Route element={<LayoutDashboard />}>
+                        <Route path="dashboard" element={<AdminDashboard />} />
+                        <Route path="reservations" element={<AdminReservations />} />
+                        <Route path="users" element={<AdminUsers />} />
+                    </Route>
+                    <Route path="/admin" element={<Navigate to="dashboard" replace />} />
                 </Route>
-                <Route path="/user" element={<Navigate to="dashboard" replace />} />
             </Route>
+            {/* </AuthProvider> */}
+
+            {/* user */}
+            {/* <AuthProvider> */}
+            <Route element={<RequireAuth allowedRoles={[0]} />}>
+                <Route path="/user">
+                    <Route element={<LayoutDashboard />}>
+                        <Route path="dashboard" element={<Welcome />} />
+                        {/* <Route path="schedule" element={<AdminReservations />} /> */}
+                    </Route>
+                    <Route path="/user" element={<Navigate to="dashboard" replace />} />
+                </Route>
+            </Route>
+            {/* </AuthProvider> */}
+
+            <Route path="/unauthorized" element={<Unauthorized />} />
             <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
     );

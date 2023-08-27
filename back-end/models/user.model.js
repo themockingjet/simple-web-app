@@ -25,7 +25,7 @@ exports.findUserById = async (id, callback) => {
 };
 
 exports.findUserByEmail = async (email, callback) => {
-    await db.query("SELECT id, email, password FROM accounts WHERE email = ?", [email], (error, result) => {
+    await db.query("SELECT id, email, password, is_admin FROM accounts WHERE email = ?", [email], (error, result) => {
         if (error) {
             callback(error, null);
         } else {
