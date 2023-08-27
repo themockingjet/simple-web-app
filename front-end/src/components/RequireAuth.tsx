@@ -13,7 +13,6 @@ const RequireAuth = ({ allowedRoles }: RequireAuthInterface) => {
     //
     const location = useLocation();
     const { cookies } = useAuth();
-    console.log(cookies);
 
     return allowedRoles.includes(cookies.role) ? (
         <Outlet />

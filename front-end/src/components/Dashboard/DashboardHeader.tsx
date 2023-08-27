@@ -3,7 +3,7 @@
 //
 
 import { useState } from "react";
-import { Link, NavLink, useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { menuItems } from "../../utils/NavbarAdminItems";
 import { useAuth } from "../../hooks/useAuth";
 import axios from "../../api/axios";
@@ -17,8 +17,21 @@ const DashboardHeader = () => {
 
     const { logout } = useAuth();
 
-    const handleLogout = () => {
-        logout();
+    const handleLogout = async () => {
+        //
+        try {
+            const response = await axios.post("/auth/logout");
+
+            if (response) {
+                logout();
+            }
+        } catch (error: any) {
+            if (!error.response) {
+                // setServerResponse({ status: "error", message: "No Server Response" });
+            } else {
+                // setServerResponse({ status: "error", message: "Login failed." });
+            }
+        }
     };
 
     const handleMiniDropDownLink = () => {

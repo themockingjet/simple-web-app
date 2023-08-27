@@ -6,16 +6,17 @@ import axios from "../api/axios";
 import FormLogin from "../components/Forms/FormLogin";
 import { FormProvider, useForm } from "react-hook-form";
 import { useState } from "react";
-import { useNavigate, Link, useLocation } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 
 const Login = () => {
     //
     const [serverResponse, setServerResponse] = useState({ status: "", message: "" });
 
-    const { login } = useAuth();
+    const { login, cookies } = useAuth();
 
     const methods = useForm();
+
+    console.log(cookies);
 
     const onSubmit = methods.handleSubmit(async (data) => {
         try {

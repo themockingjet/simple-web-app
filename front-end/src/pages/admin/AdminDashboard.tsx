@@ -2,14 +2,21 @@
 //
 //
 
-import TableReservation from "../../components/withUseQuery/TableReservation";
+// import TableReservation from "../../components/withUseQuery/TableReservation";
+import { useEffect } from "react";
 import { axiosAuth } from "../../api/axios";
+import { useAuth } from "../../hooks/useAuth";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 const queryClient = new QueryClient();
 
 const AdminDashboard = () => {
     //
+    const { cookies } = useAuth();
+
+    useEffect(() => {
+        console.log(cookies);
+    }, []);
 
     return (
         <>
