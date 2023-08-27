@@ -24,16 +24,6 @@ exports.findUserById = async (id, callback) => {
     });
 };
 
-exports.findUserByEmail = async (email, callback) => {
-    await db.query("SELECT id, email, password, is_admin FROM accounts WHERE email = ?", [email], (error, result) => {
-        if (error) {
-            callback(error, null);
-        } else {
-            callback(null, result);
-        }
-    });
-};
-
 exports.createUser = async (data, callback) => {
     await db.query(
         `INSERT INTO accounts SET email = ?, password = ?, created_at = NOW(), updated_at = NOW(); INSERT INTO users SET first_name = ?, last_name = ?, account_id = (SELECT id FROM accounts WHERE email=?), created_at = NOW(), updated_at = NOW();`,

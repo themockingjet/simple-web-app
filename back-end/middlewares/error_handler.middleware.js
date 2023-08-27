@@ -3,7 +3,7 @@
 //
 
 const { format } = require("date-fns");
-const { logEvents } = require("./eventLogger.middleware");
+const { logEvents } = require("./event_logger.middleware");
 
 const errorHandler = (err, req, res, next) => {
     const dateTime = `${format(new Date(), "yyyy-MM-dd")}`;
