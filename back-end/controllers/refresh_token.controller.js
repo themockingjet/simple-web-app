@@ -9,7 +9,6 @@ require("dotenv").config();
 exports.refreshToken = (req, res) => {
     //
     const cookies = req.cookies;
-    console.log(cookies.jwr);
     if (!cookies?.jwr) return res.sendStatus(401);
     const refreshToken = cookies.jwr;
 

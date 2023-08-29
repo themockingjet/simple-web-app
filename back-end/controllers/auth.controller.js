@@ -17,11 +17,10 @@ exports.Login = async (req, res) => {
         if (result.length > 0) {
             //
             const match = await bcrypt.compare(password, result[0].password);
-
             if (!match) return res.sendStatus(401);
 
             const accessToken = jwt.sign({ id: result[0].id }, process.env.TOKEN_SECRET, {
-                expiresIn: "10m",
+                expiresIn: "10s",
             });
             const refreshToken = jwt.sign({ id: result[0].id, email: result[0].email }, process.env.TOKEN_REFRESH, {
                 expiresIn: "1d",
@@ -31,7 +30,7 @@ exports.Login = async (req, res) => {
                 if (err) return res.sendStatus(500);
             });
 
-            res.cookie("jwr", refreshToken, { httpOnly: true, maxAge: 1000 * 10 });
+            res.cookie("jwr", refreshToken, { httpOnly: true, maxAge: maxAge });
             res.status(200).send({ id: result[0].id, email: result[0].email, role: result[0].is_admin, token: accessToken });
         } else {
             //
