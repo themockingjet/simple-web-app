@@ -22,7 +22,8 @@ import AdminReservations from "./pages/admin/AdminReservations";
 import AdminUsers from "./pages/admin/AdminUsers";
 
 // User
-import Welcome from "./pages/user/Welcome";
+import UserDashboard from "./pages/user/UserDashboard";
+import UserSchedule from "./pages/user/UserSchedule";
 
 export default function App() {
     return (
@@ -54,8 +55,8 @@ export default function App() {
             <Route element={<RequireAuth allowedRoles={[0]} />}>
                 <Route path="/user">
                     <Route element={<LayoutDashboard />}>
-                        <Route path="dashboard" element={<Welcome />} />
-                        {/* <Route path="schedule" element={<AdminReservations />} /> */}
+                        <Route path="dashboard" element={<UserDashboard />} />
+                        <Route path="schedule" element={<UserSchedule />} />
                     </Route>
                     <Route path="/user" element={<Navigate to="dashboard" replace />} />
                 </Route>

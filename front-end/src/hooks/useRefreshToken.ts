@@ -5,10 +5,12 @@
 import axios from "../api/axios";
 import { useAuth } from "./useAuth";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
 
 const useRefreshToken = () => {
     //
-    const { cookies, clearCookies } = useAuth();
+    const { clearCookies } = useAuth();
+    const [cookies, setCookies] = useCookies();
 
     const location = useLocation();
     const navigate = useNavigate();
@@ -17,9 +19,8 @@ const useRefreshToken = () => {
         //
         try {
             const response = await axios.get("/refresh", { withCredentials: true });
-
             if (response) {
-                cookies.token = response.data.token;
+                setCookies("token", response.data.token, { path: "/" });
             }
 
             return response.data.token;

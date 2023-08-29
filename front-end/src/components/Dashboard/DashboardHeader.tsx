@@ -7,18 +7,25 @@ import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { menuItems } from "../../utils/NavbarAdminItems";
 import { useAuth } from "../../hooks/useAuth";
 import axios from "../../api/axios";
+import FormLogout from "../Forms/FormLogout";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
+import { useMediaQuery } from "@uidotdev/usehooks";
 
 const DashboardHeader = () => {
+    //
     const [show, setShow] = useState<boolean>(false);
     const [settingsShow, setSettingsShow] = useState<boolean>(false);
+    const isLargeDevice = useMediaQuery("only screen and (min-width : 993px) ");
 
     const curLocation = useLocation();
     let curDirectory = menuItems.filter((item) => item.path === curLocation.pathname.split("/")[2])[0];
 
-    const { logout } = useAuth();
+    const { logout, cookies } = useAuth();
 
-    const handleLogout = async () => {
+    const handleLogout = async (e: any) => {
         //
+        e.preventDefault();
         try {
             const response = await axios.get("/auth/logout");
 
@@ -26,10 +33,8 @@ const DashboardHeader = () => {
                 logout();
             }
         } catch (error: any) {
-            if (!error.response) {
-                // setServerResponse({ status: "error", message: "No Server Response" });
-            } else {
-                // setServerResponse({ status: "error", message: "Login failed." });
+            if (error) {
+                // Do something when logout fails
             }
         }
     };
@@ -46,38 +51,24 @@ const DashboardHeader = () => {
         <>
             <header className="container mx-auto h-12 lg:h-16 border-b-2 border-blue-500 drop-shadow-md relative">
                 {/* For LG screen */}
-                <div className="h-full w-full hidden lg:block">
-                    <div className="flex h-full w-full justify-between items-center px-4">
-                        <div className="flex h-full w-full justify-between items-center px-2 text-3xl font-bold text-blue-500">
-                            <Link to="/admin/dashboard" className="left-0 px-2 font-bold hover:text-blue-700">
-                                #WebApp
-                            </Link>
+                <div className="flex flex-row h-full w-full justify-between items-center px-4 hidden lg:inline-flex">
+                    <div className="flex h-full items-center px-2 text-blue-500">
+                        <Link to="/admin/dashboard" className="left-0 px-2 text-3xl font-bold hover:text-blue-700">
+                            <span className="drop-shadow-md">#WebApp</span>
+                        </Link>
+                    </div>
+                    <div className="group flex relative items-center space-x-4">
+                        {/* Details */}
+                        <div className="bg-gray-100 rounded-md px-3 drop-shadow-md">
+                            <p className="text-center font-medium group-hover:text-slate-900">{cookies.email}</p>
+                            <p className="text-center text-sm font-medium text-slate-500 group-hover:text-slate-700">
+                                {cookies.role === 1 ? "Admin" : "User"}
+                            </p>
                         </div>
-                        <div className="flex flex-row justify-between hidden lg:block">
-                            {/* left */}
-                            <ul></ul>
-                            {/* right */}
-                            <div className="group flex items-center relative">
-                                <div className="ltr:ml-3 rtl:mr-3 bg-gray-100 rounded-md px-3 mr-3 w-[70px]">
-                                    <p className="text-center font-medium text-slate-800 group-hover:text-slate-900">
-                                        User!
-                                    </p>
-                                    <p className="text-center text-sm font-medium text-slate-500 group-hover:text-slate-700">
-                                        Role!
-                                    </p>
-                                </div>
-                                {/* Profile */}
-                                <button onClick={handleDropDownLink} className="">
-                                    <img
-                                        className=""
-                                        width="48"
-                                        height="48"
-                                        src="https://img.icons8.com/pastel-glyph/64/user-male-circle.png"
-                                        alt="user-male-circle"
-                                    />
-                                </button>
-                            </div>
-                        </div>
+                        {/* Profile */}
+                        <button onClick={handleDropDownLink} className="h-full w-full drop-shadow-md">
+                            <FontAwesomeIcon icon={faUserCircle} color="white" size="3x" className="drop-shadow-md" />
+                        </button>
                     </div>
                 </div>
                 {/* For SM screen */}
@@ -96,17 +87,29 @@ const DashboardHeader = () => {
                     </button>
                 </div>
             </header>
-            <div
-                className={`z-50 absolute top-[3rem] flex flex-col w-full py-1 bg-white font-bold text-xl drop-shadow-md ${
-                    show ? "" : "hidden"
-                }`}
-            >
-                {menuItems.map((item, index) => (
-                    <NavLink to={item.path} key={index} className="flex justify-center" onClick={handleMiniDropDownLink}>
-                        {({ isActive }: any) => <span className={isActive ? "hidden" : "block"}>{item.title}</span>}
-                    </NavLink>
-                ))}
-            </div>
+            {/* SM Screen Nav Links */}
+            {!isLargeDevice && (
+                <div
+                    className={`z-50 absolute top-[3rem] flex flex-col w-full py-1 bg-white font-bold text-xl drop-shadow-md ${
+                        show ? "" : "hidden"
+                    }`}
+                >
+                    {menuItems
+                        .filter((item) => item.role.includes(cookies.role))
+                        .map((item, index) => (
+                            <NavLink
+                                to={item.path}
+                                key={index}
+                                className="flex justify-center"
+                                onClick={handleMiniDropDownLink}
+                            >
+                                {({ isActive }: any) => <span className={isActive ? "hidden" : "block"}>{item.title}</span>}
+                            </NavLink>
+                        ))}
+                </div>
+            )}
+
+            {/* Settings/Logout DropDown */}
             <div className="container mx-auto relative">
                 <div
                     className={`z-50 container absolute top-0 right-0 flex flex-col w-auto gap-1 bg-white px-5 py-2 drop-shadow-md block ${
@@ -121,15 +124,7 @@ const DashboardHeader = () => {
                         Settings
                     </Link>
                     {/* form logout */}
-                    <form
-                        className="w-full text-start font-bold text-base hover:text-blue-300"
-                        onSubmit={(e: any) => {
-                            e.preventDefault();
-                            handleLogout();
-                        }}
-                    >
-                        <input type="submit" value="Logout" />
-                    </form>
+                    <FormLogout onSubmit={handleLogout} />
                 </div>
             </div>
         </>

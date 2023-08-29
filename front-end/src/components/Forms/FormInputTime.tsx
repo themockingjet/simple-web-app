@@ -1,13 +1,12 @@
 //
 //
 //
-
 import DatePicker from "react-datepicker";
 import { cn } from "../../utils/utils";
 import { Controller, useFormContext } from "react-hook-form";
-import { useOccupiedDates } from "../../hooks/useOccupiedDates";
+import { useOccupiedTimes } from "../../hooks/useOccupiedTimes";
 
-interface FormInputDateProps {
+interface FormInputTimeProps {
     //
     id: string;
     name: any;
@@ -19,21 +18,23 @@ interface FormInputDateProps {
         };
         validate?: (value: any) => boolean | string;
     };
-    date?: Date | undefined;
+    date: Date | null;
     divClassName?: string;
     labelClassName?: string;
     inputClassName?: string;
-    onDateChange?: (e: Date) => void;
+    onDateChange?: (e: any) => void;
 }
 
-const FormInputDate = ({ id, name, label, validation, date, ...props }: FormInputDateProps) => {
+const FormInputTime = ({ id, name, label, validation, ...props }: FormInputTimeProps) => {
     //
     const {
         control,
         formState: { errors },
     } = useFormContext();
 
-    const { isLoading, isError, dateFilter } = useOccupiedDates();
+    const date = props.date;
+
+    const { timeFilter, filterPassedTime } = useOccupiedTimes(date);
 
     return (
         <div className={cn("flex flex-col w-full w-full px-3 h-24", props.divClassName)}>
@@ -56,9 +57,12 @@ const FormInputDate = ({ id, name, label, validation, date, ...props }: FormInpu
                             props.onDateChange && props.onDateChange(e);
                         }}
                         selected={field.value}
+                        disabled={!date}
                         disabledKeyboardNavigation
-                        isClearable
-                        excludeDates={dateFilter}
+                        includeDates={[date ? date : new Date()]}
+                        excludeTimes={timeFilter}
+                        filterTime={filterPassedTime}
+                        minDate={date}
                         {...props}
                     />
                 )}
@@ -72,4 +76,4 @@ const FormInputDate = ({ id, name, label, validation, date, ...props }: FormInpu
     );
 };
 
-export default FormInputDate;
+export default FormInputTime;

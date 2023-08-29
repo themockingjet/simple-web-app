@@ -34,7 +34,7 @@ export const AuthProvider = ({ children }: any) => {
         setCookies("role", data.role, { path: "/" });
         setCookies("token", data.token, { path: "/" });
 
-        navigate("/admin/dashboard", { replace: true });
+        data.role === 1 ? navigate("/admin/dashboard", { replace: true }) : navigate("/user/dashboard", { replace: true });
     };
 
     const clearCookies = () => {

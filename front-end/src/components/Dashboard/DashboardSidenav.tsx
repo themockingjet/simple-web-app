@@ -5,61 +5,68 @@
 import { useState } from "react";
 import { cn } from "../../utils/utils";
 import { NavLink } from "react-router-dom";
+import { useAuth } from "../../hooks/useAuth";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBorderAll, faCalendarDays, faUsers } from "@fortawesome/free-solid-svg-icons";
 
 interface DashboardSidenavProps {
     className?: string;
 }
 
 const DashboardSidenav = ({ className }: DashboardSidenavProps) => {
-    const [isActive, setIsActive] = useState(false);
-
+    const { cookies } = useAuth();
     return (
         <>
-            <div
-                id="d-sidenav"
-                className={cn(
-                    "card w-[250px] max-h-[calc(100vh-5rem)] lg:max-h-[calc(100vh-6rem)] shrink-0 absolute md:static border border-gray-200 drop-shadow-md",
-                    className
-                )}
-            >
+            <div id="d-sidenav" className="card w-[250px] border border-gray-200 drop-shadow-md">
                 <nav className="h-full">
                     <div className="h-full flex flex-col gap-3 font-semi lg:text-xl">
-                        <li className="flex flex-row items-center justify-start gap-2">
+                        <li className="flex ">
                             {/* <span><FaThList color="white" /></span> */}
                             <NavLink
                                 to="dashboard"
                                 className={cn(
                                     ({ isActive, isPending }: any) => (isPending ? "pending" : isActive ? "active" : ""),
-                                    "px-10 py-2 w-full"
+                                    "flex px-4 py-2 w-full space-x-2 items-center justify-start"
                                 )}
                             >
-                                Dashboard
+                                <span className="w-6 flex justify-center">
+                                    <FontAwesomeIcon icon={faBorderAll} />
+                                </span>
+                                <span>Dashboard</span>
                                 {/* <span><FaThList color="white" /></span> */}
                             </NavLink>
                         </li>
-                        <li className="flex flex-row items-center justify-start gap-2">
+                        <li className="flex">
                             <NavLink
-                                to="reservations"
+                                to={cookies.role === 1 ? "reservations" : "schedule"}
                                 className={cn(
                                     ({ isActive, isPending }: any) => (isPending ? "pending" : isActive ? "active" : ""),
-                                    "px-10 py-2 w-full"
+                                    "flex px-4 py-2 w-full space-x-2 items-center justify-start"
                                 )}
                             >
-                                Reservations
+                                <span className="w-6 flex justify-center">
+                                    <FontAwesomeIcon icon={faCalendarDays} />
+                                </span>
+                                <span>{cookies.role === 1 ? "Reservations" : "Book Now"}</span>
                             </NavLink>
                         </li>
-                        <li className="flex flex-row items-center justify-start gap-2">
-                            <NavLink
-                                to="users"
-                                className={cn(
-                                    ({ isActive, isPending }: any) => (isPending ? "pending" : isActive ? "active" : ""),
-                                    "px-10 py-2 w-full"
-                                )}
-                            >
-                                Users
-                                {/* <span><FaThList color="white" /></span> */}
-                            </NavLink>
-                        </li>
+                        {cookies.role === 1 && (
+                            <li className="flex">
+                                <NavLink
+                                    to="users"
+                                    className={cn(
+                                        ({ isActive, isPending }: any) => (isPending ? "pending" : isActive ? "active" : ""),
+                                        "flex px-4 py-2 w-full space-x-2 items-center justify-start"
+                                    )}
+                                >
+                                    <span className="w-6 flex justify-center">
+                                        <FontAwesomeIcon icon={faUsers} />
+                                    </span>
+                                    <span>Users</span>
+                                    {/* <span><FaThList color="white" /></span> */}
+                                </NavLink>
+                            </li>
+                        )}
                     </div>
                 </nav>
             </div>

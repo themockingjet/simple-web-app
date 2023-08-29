@@ -2,9 +2,8 @@
 //
 //
 
-import { axiosAuth } from "../api/axios";
 import { Link } from "react-router-dom";
-import FormReservation from "../components/Forms/FormReservation";
+import FormSchedule from "../components/Forms/FormSchedule";
 import { FormProvider, useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 
@@ -13,35 +12,36 @@ const Reservation = () => {
     const [user, setUser] = useState();
     const methods = useForm();
     const onSubmit = methods.handleSubmit((data) => {
+        console.log(data);
         // axiosAuth.post("http://localhost:5000/auth/login", data).then((response) => {
         //     console.log(response);
         //     window.location.href = "/";
         // });
     });
 
-    useEffect(() => {
-        let isMounted = true;
-        const controller = new AbortController();
+    // useEffect(() => {
+    //     let isMounted = true;
+    //     const controller = new AbortController();
 
-        const getUsers = async () => {
-            try {
-                const response = await axiosAuth.get("/users", {
-                    signal: controller.signal,
-                });
-                console.log(response.data);
-                isMounted && setUser(response.data);
-            } catch (error) {
-                console.log(error);
-            }
-        };
+    //     const getUsers = async () => {
+    //         try {
+    //             const response = await axiosAuth.get("/users", {
+    //                 signal: controller.signal,
+    //             });
+    //             console.log(response.data);
+    //             isMounted && setUser(response.data);
+    //         } catch (error) {
+    //             console.log(error);
+    //         }
+    //     };
 
-        getUsers();
+    //     getUsers();
 
-        return () => {
-            isMounted = false;
-            controller.abort();
-        };
-    }, []);
+    //     return () => {
+    //         isMounted = false;
+    //         controller.abort();
+    //     };
+    // }, []);
 
     return (
         <>
@@ -54,7 +54,7 @@ const Reservation = () => {
                         {/* Form */}
                         <div className="flex w-full h-full justify-center lg:rounded-l-2xl py-2">
                             <FormProvider {...methods}>
-                                <FormReservation onSubmit={onSubmit} />
+                                <FormSchedule onSubmit={onSubmit} />
                             </FormProvider>
                         </div>
                         {/* Design */}

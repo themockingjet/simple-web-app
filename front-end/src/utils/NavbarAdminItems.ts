@@ -6,16 +6,25 @@ export const menuItems = [
     {
         title: "Dashboard",
         path: "dashboard",
-        key: 0,
+        role: [0, 1],
+        key: 1,
     },
     {
         title: "Reservations",
         path: "reservations",
-        key: 1,
+        role: [1],
+        key: 2,
     },
     {
         title: "Users",
         path: "users",
-        key: 2,
+        role: [1],
+        key: 3,
+    },
+    {
+        title: "Book Now",
+        path: "schedule",
+        role: [0],
+        key: 4,
     },
 ];

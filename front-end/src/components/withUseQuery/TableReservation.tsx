@@ -2,21 +2,26 @@
 //
 //
 
+import Loading from "../Loading";
+import ErrorLoad from "../ErrorLoad";
+
 import { usePagination } from "@mantine/hooks";
 import { Pagination } from "@mantine/core";
-import { fetchReservations } from "../../api/reservation";
-import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
+import { useQueryReservations } from "../../hooks/useQueryReservations";
 
 const TableReservation = () => {
+    //
     const ITEMS_PER_PAGE = 10;
-    const [visibleResults, setVisibleResults] = useState<string[]>([]);
-    const { isError, isLoading, data } = useQuery(["reservations"], fetchReservations, {
-        staleTime: 60000,
-        onSuccess: (data) => {
-            setVisibleResults(data.slice(0, ITEMS_PER_PAGE));
-        },
-    });
+    const { queryReservations } = useQueryReservations();
+    const { isError, isLoading, data } = queryReservations(ITEMS_PER_PAGE);
+    const [visibleResults, setVisibleResults] = useState<string[]>(data);
+    // const { isError, isLoading, data } = useQuery(["reservations"], fetchReservations, {
+    //     staleTime: 60000,
+    //     onSuccess: (data) => {
+    //         setVisibleResults(data.slice(0, ITEMS_PER_PAGE));
+    //     },
+    // });
 
     const pagination = usePagination({
         total: Math.ceil(data?.length / ITEMS_PER_PAGE),
@@ -29,11 +34,11 @@ const TableReservation = () => {
     });
 
     if (isLoading) {
-        return <h2>Loading...</h2>;
+        return <Loading />;
     }
 
     if (isError) {
-        return <h2>Error Occured...</h2>;
+        return <ErrorLoad />;
     }
     return (
         <>

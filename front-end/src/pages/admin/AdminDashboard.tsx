@@ -2,37 +2,23 @@
 //
 //
 
-// import TableReservation from "../../components/withUseQuery/TableReservation";
-
+import TableReservation from "../../components/withUseQuery/TableReservation";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-const queryClient = new QueryClient();
 
-import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            retry: false,
+        },
+    },
+});
+
 const AdminDashboard = () => {
     //
-    const axiosPrivate = useAxiosPrivate();
-
-    async function handleClick() {
-        try {
-            const res = await axiosPrivate.get("/api/user/test");
-
-            if (res) {
-                console.log(res.data);
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    }
 
     return (
         <>
-            <button onClick={handleClick}>refresh</button>
-        </>
-    );
-
-    return (
-        <>
-            <div className="card lg:ml-2 w-full h-full min-h-[calc(100vh-5rem)] lg:min-h-[calc(100vh-6rem)] border border-gray-200 drop-shadow-md">
+            <div className="card lg:ml-2 w-full h-full border border-gray-200 drop-shadow-md">
                 <div className="grid grid-flow-row gap-4">
                     <div className="container mx-auto">
                         <div className="flex flex-col">
@@ -54,7 +40,9 @@ const AdminDashboard = () => {
                     </div>
                     {/* Table 1 */}
                     <div className="container mx-auto overflow-auto min-h-[744px] max-h-[744px] border border-gray-500 rounded-md">
-                        <QueryClientProvider client={queryClient}>{/* <TableReservation /> */}</QueryClientProvider>
+                        <QueryClientProvider client={queryClient}>
+                            <TableReservation />
+                        </QueryClientProvider>
                     </div>
                     {/* Table 2 */}
                     <div className="container mx-auto h-36 overflow-auto"></div>
