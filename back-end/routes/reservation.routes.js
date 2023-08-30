@@ -6,7 +6,7 @@ const express = require("express");
 const route = express.Router();
 const ReservationController = require("../controllers/reservation.controller");
 
-route.get("/", ReservationController.getReservations);
+route.get("/", ReservationController.findReservations);
 route.post("/", ReservationController.createReservation);
 
 route.get("/:id", ReservationController.findReservationById);

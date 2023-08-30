@@ -19,6 +19,7 @@ const RefreshRoutes = require("./routes/refresh.routes");
 const RegisterRoutes = require("./routes/register.routes");
 const UserRoutes = require("./routes/user.routes");
 const ReservationRoutes = require("./routes/reservation.routes");
+const TableRoutes = require("./routes/table.routes");
 
 // custom middleware logger
 app.use(logger);
@@ -39,6 +40,7 @@ app.use("/refresh", RefreshRoutes);
 app.use(authenticateToken);
 app.use("/api/user", UserRoutes);
 app.use("/api/reservation", ReservationRoutes);
+app.use("/api/table", TableRoutes);
 // app.use("/api/account", accountRoute);
 
 app.all("*", (req, res) => {

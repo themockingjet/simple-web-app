@@ -6,9 +6,11 @@ const bcrypt = require("bcrypt");
 const User = require("../models/user.model");
 
 exports.createUser = async (req, res) => {
+    //
     const salt = await bcrypt.genSalt();
     const hashedpassword = await bcrypt.hash(req.body.password, salt);
     req.body.password = hashedpassword;
+
     User.createUser(req.body, (err, result) => {
         if (err) {
             res.status(500).send({ message: "Internal server error" });
@@ -18,7 +20,30 @@ exports.createUser = async (req, res) => {
     });
 };
 
-exports.checkEmailExists = async (req, res) => {
+exports.findUsers = async (req, res) => {
+    //
+    User.findUsers((err, result) => {
+        if (err) {
+            res.status(500).send(err);
+        } else {
+            res.status(200).send(result);
+        }
+    });
+};
+
+exports.findUserById = async (req, res) => {
+    //
+    User.findUserById(req.params.id, (err, result) => {
+        if (err) {
+            res.status(500).send(err);
+        } else {
+            res.status(200).send(result);
+        }
+    });
+};
+
+exports.findUserByEmail = async (req, res) => {
+    //
     User.findUserByEmail(req.params.email, (err, result) => {
         if (err) {
             res.status(500).send(err);
@@ -42,6 +67,17 @@ exports.findUserByEmail = async (req, res) => {
             } else {
                 res.status(200).send({ message: "Email does not exist." });
             }
+        }
+    });
+};
+
+exports.updateUser = async (req, res) => {
+    //
+    User.updateUser(req.params.id, req.body, (err, result) => {
+        if (err) {
+            res.status(500).send(err);
+        } else {
+            res.status(200).send(result);
         }
     });
 };

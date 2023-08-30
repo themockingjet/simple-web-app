@@ -16,31 +16,30 @@ exports.createReservation = async (req, res) => {
     data.time = `${data.time.getHours().toString().padStart(2, 0)}:${data.time.getMinutes().toString().padStart(2, 0)}`;
 
     await Reservation.createReservation(data, (err, result) => {
-        if (err) {
-            res.sendStatus(500);
-        } else {
-            res.sendStatus(200);
-        }
+        //
+        if (err) return res.sendStatus(500);
+
+        res.status(200).send(result);
     });
 };
 
-exports.getReservations = async (req, res) => {
-    await Reservation.getReservations((err, result) => {
-        if (err) {
-            res.sendStatus(500);
-        } else {
-            res.status(200).send(result);
-        }
+exports.findReservations = async (req, res) => {
+    //
+    await Reservation.findReservations((err, result) => {
+        //
+        if (err) return res.sendStatus(500);
+
+        res.status(200).send(result);
     });
 };
 
 exports.findReservationById = async (req, res) => {
+    //
     await Reservation.findReservationById(req.params.id, (err, result) => {
-        if (err) {
-            res.sendStatus(500);
-        } else {
-            res.status(200).send(result);
-        }
+        //
+        if (err) return res.sendStatus(500);
+
+        res.status(200).send(result);
     });
 };
 
@@ -92,7 +91,9 @@ exports.findReservationByRange = async (req, res) => {
 };
 
 exports.updateReservation = async (req, res) => {
+    //
     await Reservation.updateReservation(req.params.id, req.body, (err, result) => {
+        //
         if (err) {
             res.sendStatus(500);
         } else {

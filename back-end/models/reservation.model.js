@@ -5,12 +5,13 @@
 const db = require("../config/db_config");
 
 exports.createReservation = async (data, callback) => {
+    //
     await db.query(
         "INSERT INTO reservations SET user_id = (SELECT id FROM users WHERE account_id = ?), date = ?, time = ?, created_at = NOW(), updated_at = NOW();",
         [data.id, data.date, data.time],
         (error, result) => {
+            //
             if (error) {
-                console.log(error);
                 callback(error, null);
             } else {
                 callback(null, result);
@@ -19,8 +20,10 @@ exports.createReservation = async (data, callback) => {
     );
 };
 
-exports.getReservations = async (callback) => {
+exports.findReservations = async (callback) => {
+    //
     await db.query("SELECT * FROM reservations", (error, result) => {
+        //
         if (error) {
             callback(error, null);
         } else {
