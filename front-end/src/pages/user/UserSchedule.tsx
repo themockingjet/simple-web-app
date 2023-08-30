@@ -4,8 +4,8 @@
 "client";
 
 import FormSchedule from "../../components/Forms/FormSchedule";
-import { FormProvider, useForm } from "react-hook-form";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import { FormProvider, useForm } from "react-hook-form";
 import { useAuth } from "../../hooks/useAuth";
 import { useState } from "react";
 
@@ -23,28 +23,27 @@ const UserSchedule = () => {
     const onSubmit = methods.handleSubmit(async (data) => {
         //
         data.id = cookies.id;
-        console.log(data);
 
-        // try {
-        //     const response = await axiosPrivate.post("/api/reservation", data);
-        //     if (response) {
-        //         methods.reset();
-        //         setErrorMessage({
-        //             status: "success",
-        //             message: "Success! You may now view your reservation schedule in your dashboard.",
-        //         });
-        //     }
-        // } catch (error: any) {
-        //     if (!error.response) {
-        //         setErrorMessage({ status: "error", message: "No Server Response." });
-        //     } else {
-        //         setErrorMessage({ status: "error", message: "Internal Server Error." });
-        //     }
-        // }
+        try {
+            const response = await axiosPrivate.post("/api/reservation", data);
+            if (response) {
+                methods.reset();
+                setErrorMessage({
+                    status: "success",
+                    message: "Success! You may now view your reservation schedule in your dashboard.",
+                });
+            }
+        } catch (error: any) {
+            if (!error.response) {
+                setErrorMessage({ status: "error", message: "No Server Response." });
+            } else {
+                setErrorMessage({ status: "error", message: "Internal Server Error." });
+            }
+        }
 
-        // setTimeout(() => {
-        //     setErrorMessage({ status: "", message: "" });
-        // }, 3000);
+        setTimeout(() => {
+            setErrorMessage({ status: "", message: "" });
+        }, 3000);
     });
 
     return (
@@ -61,7 +60,7 @@ const UserSchedule = () => {
                 </div>
 
                 {errorMessage.message && (
-                    <div className="z-0 card h-full border border-gray-200 drop-shadow-sm w-1/2 flex self-center">
+                    <div className="z-0 h-full border border-gray-200 drop-shadow-sm w-1/2 flex self-center">
                         <div
                             className={`container mx-auto flex justify-center border py-2 rounded-md ${
                                 errorMessage.status === "success"

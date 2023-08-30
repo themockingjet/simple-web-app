@@ -2,51 +2,62 @@
 //
 //
 
-import TableReservation from "../../components/withUseQuery/TableReservation";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import TableReservations from "../../components/withUseQuery/TableReservations";
+import TableAccounts from "../../components/withUseQuery/TableAccounts";
+import TableUsers from "../../components/withUseQuery/TableUsers";
+import Card from "../../components/Card";
 
-const queryClient = new QueryClient({
-    defaultOptions: {
-        queries: {
-            retry: false,
-        },
-    },
-});
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+const queryClient = new QueryClient();
 
 const AdminDashboard = () => {
     //
 
     return (
         <>
-            <div className="card lg:ml-2 w-full h-full border border-gray-200 drop-shadow-md">
-                <div className="grid grid-flow-row gap-4">
-                    <div className="container mx-auto">
-                        <div className="flex flex-col">
-                            <div className="grid grid-flow-row lg:grid-flow-col gap-4 w-full">
-                                <div className="flex justify-center items-center h-24 bg-red-500 rounded-xl text-white shadow-lg">
-                                    <h1>Pending</h1>
-                                </div>
-                                <div className="flex justify-center items-center h-24 bg-green-500 rounded-xl text-white shadow-lg">
-                                    <h1>Completed</h1>
-                                </div>
-                                <div className="flex justify-center items-center h-24 bg-slate-500 rounded-xl text-white shadow-lg">
-                                    <h1>Cancelled</h1>
-                                </div>
-                                <div className="flex justify-center items-center h-24 bg-red-100 rounded-xl">
-                                    <h1>Something...</h1>
-                                </div>
-                            </div>
+            <div className="grid auto-cols-4 grid-flow-row-dense grid-rows-auto gap-4">
+                <div className="h-24 col-span-4 grid grid-cols-4 gap-2">
+                    <Card className="h-24 shadow-red-500/50">
+                        <div className="flex justify-center items-center h-full bg-red-500 rounded-lg text-white  ">
+                            <h1>Pending</h1>
                         </div>
-                    </div>
-                    {/* Table 1 */}
-                    <div className="container mx-auto overflow-auto min-h-[744px] max-h-[744px] border border-gray-500 rounded-md">
-                        <QueryClientProvider client={queryClient}>
-                            <TableReservation />
-                        </QueryClientProvider>
-                    </div>
-                    {/* Table 2 */}
-                    <div className="container mx-auto h-36 overflow-auto"></div>
+                    </Card>
+                    <Card className="h-24 shadow-green-500/50">
+                        <div className="flex justify-center items-center h-full bg-green-500 rounded-lg text-white ">
+                            <h1>Completed</h1>
+                        </div>
+                    </Card>
+
+                    <Card className="h-24 shadow-slate-500/50">
+                        <div className="flex justify-center items-center h-full bg-slate-500 rounded-lg text-white ">
+                            <h1>Cancelled</h1>
+                        </div>
+                    </Card>
+
+                    <Card className="h-24 shadow-cyan-500/50">
+                        <div className=" flex justify-center items-center h-full bg-cyan-500 rounded-lg shadow drop-shadow">
+                            <h1>Users</h1>
+                        </div>
+                    </Card>
                 </div>
+
+                <Card className="col-span-4 min-h-[28rem] max-h-[28rem] min-h-[28rem] max-h-[28rem] md:min-h-[32rem] md:max-h-[32rem] flex flex-col overflow-x-auto overflow-y-hidden pb-2">
+                    <QueryClientProvider client={queryClient}>
+                        <TableReservations showButton={false} />
+                    </QueryClientProvider>
+                </Card>
+
+                <Card className="col-span-2 min-h-[28rem] max-h-[28rem] min-h-[28rem] max-h-[28rem] md:min-h-[32rem] md:max-h-[32rem] flex flex-col overflow-x-auto overflow-y-hidden pb-2">
+                    <QueryClientProvider client={queryClient}>
+                        <TableUsers showButton={false} />
+                    </QueryClientProvider>
+                </Card>
+
+                <Card className="col-span-2 min-h-[28rem] max-h-[28rem] min-h-[28rem] max-h-[28rem] md:min-h-[32rem] md:max-h-[32rem] flex flex-col overflow-x-auto overflow-y-hidden pb-2">
+                    <QueryClientProvider client={queryClient}>
+                        <TableAccounts showButton={false} />
+                    </QueryClientProvider>
+                </Card>
             </div>
         </>
     );

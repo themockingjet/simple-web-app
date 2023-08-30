@@ -15,7 +15,9 @@ const LayoutDashboard = () => {
             <DashboardHeader />
             <div className="flex flex-row container mx-auto my-4 min-h-[calc(100vh-5rem)] lg:min-h-[calc(100vh-6rem)] space-x-2">
                 {isLargeDevice && <DashboardSidenav />}
-                <Outlet />
+                <div className="flex flex-col h-full w-full space-y-2">
+                    <Outlet />
+                </div>
             </div>
         </>
     );

@@ -7,19 +7,19 @@ import ErrorLoad from "../ErrorLoad";
 
 import { usePagination } from "@mantine/hooks";
 import { Pagination } from "@mantine/core";
-import { useQueryUsers } from "../../hooks/useQuery/useQueryUsers";
+import { useQueryAccounts } from "../../hooks/useQuery/useQueryAccounts";
 import { format } from "date-fns";
 
-interface TableUsersProps {
+interface TableAccountsProps {
     showButton: boolean;
 }
 
-const TableUsers = ({ showButton }: TableUsersProps) => {
+const TableAccounts = ({ showButton }: TableAccountsProps) => {
     //
     const ITEMS_PER_PAGE = 10;
 
-    const { queryTableUsers } = useQueryUsers();
-    const { isError, isLoading, data, result, setResult } = queryTableUsers(ITEMS_PER_PAGE);
+    const { queryTableAccounts } = useQueryAccounts();
+    const { isError, isLoading, data, result, setResult } = queryTableAccounts(ITEMS_PER_PAGE);
 
     const pagination = usePagination({
         total: Math.ceil(data?.length / ITEMS_PER_PAGE),
@@ -42,28 +42,28 @@ const TableUsers = ({ showButton }: TableUsersProps) => {
     return (
         <>
             <div className="sticky left-0 flex justify-center items-center h-8 lg:h-10 bg-blue-500">
-                <span className="text-white font-semibold text-md md:text-xl lg:text-2xl">Users</span>
+                <span className="text-white font-semibold text-md md:text-xl lg:text-2xl">Accounts</span>
             </div>
             <div className="flex flex-col flex-1">
                 <table className="shrink-0 table-fixed w-full text-center text-sm md:text-base ">
                     <thead>
                         <tr>
                             <th className="w-12 lg:w-20 border-y-2 border-blue-300 text-blue-500 py-2">ID</th>
-                            <th className="w-26 border-y-2 border-blue-300 text-blue-500 py-2">Full Name</th>
-                            <th className="w-24 border-y-2 border-blue-300 text-blue-500 py-2">Birthday</th>
-                            <th className="w-44 border-y-2 border-blue-300 text-blue-500 py-2">Contact</th>
-                            <th className="w-36 border-y-2 border-blue-300 text-blue-500 py-2">Email</th>
+                            <th className="w-32 border-y-2 border-blue-300 text-blue-500 py-2">Email</th>
+                            <th className="w-24 border-y-2 border-blue-300 text-blue-500 py-2">Role</th>
+                            <th className="w-44 border-y-2 border-blue-300 text-blue-500 py-2">Date Created</th>
                             {showButton && <th className="w-28 border-y-2 border-blue-500 bg-blue-500"></th>}
                         </tr>
                     </thead>
                     <tbody>
-                        {result?.map((user: any, index: any) => (
+                        {result?.map((account: any, index: any) => (
                             <tr key={index}>
-                                <td className="py-1 border-b border-gray-500">{user.id}</td>
-                                <td className="border-b border-gray-500">{user.first_name + " " + user.last_name}</td>
-                                <td className="border-b border-gray-500">{format(new Date(user.birthday), "dd/MM/yyyy")}</td>
-                                <td className="border-b border-gray-500">{user.contact_no}</td>
-                                <td className="border-b border-gray-500">{user.email}</td>
+                                <td className="py-1 border-b border-gray-500">{account.id}</td>
+                                <td className="border-b border-gray-500">{account.email}</td>
+                                <td className="border-b border-gray-500">{account.role === 1 ? "Admin" : "User"}</td>
+                                <td className="border-b border-gray-500">
+                                    {format(new Date(account.created_at), "dd/MM/yyyy h:mm a")}
+                                </td>
                                 {showButton && (
                                     <td className="border-b border-gray-500">
                                         <button className="px-2 py-1 border-blue-500 border text-blue-500 rounded transition duration-300 hover:bg-blue-700 hover:text-white focus:outline-none">
@@ -89,4 +89,4 @@ const TableUsers = ({ showButton }: TableUsersProps) => {
     );
 };
 
-export default TableUsers;
+export default TableAccounts;

@@ -7,7 +7,7 @@ import { useState, useEffect } from "react";
 import setHours from "date-fns/setHours";
 import setMinutes from "date-fns/setMinutes";
 import addHours from "date-fns/addHours";
-import { useQueryReservations } from "./useQueryReservations";
+import { useQueryReservations } from "./useQuery/useQueryReservations";
 
 export function useOccupiedTimes(date: Date | null) {
     const [timeFilter, setTimeFilter] = useState<Date[]>([]);
