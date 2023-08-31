@@ -13,7 +13,7 @@ export function useQueryAccounts() {
     const queryTableAccounts = (ITEMS_PER_PAGE: number, search: string | undefined) => {
         //
         const [result, setResult] = useState([]);
-        const {isError, isLoading, data} = useQuery(["accounts_dt", search], () => findTableAccounts(search), {
+        const {isError, isLoading, data, refetch} = useQuery(["accounts_dt", search], () => findTableAccounts(search), {
             cacheTime: 600000,
             retry: 3,
             onSuccess: (data: any) => {
@@ -21,7 +21,7 @@ export function useQueryAccounts() {
             },
         });
 
-        return {isError, isLoading, data, result, setResult};
+        return {isError, isLoading, data, result, setResult, refetch};
     };
 
     return {queryTableAccounts};

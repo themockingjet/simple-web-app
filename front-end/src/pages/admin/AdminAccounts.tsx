@@ -9,6 +9,7 @@ import TableAccounts from "../../components/withUseQuery/TableAccounts";
 import Input from "../../components/Input";
 import {useState} from "react";
 import {useDebouncedState} from "@mantine/hooks";
+import ModalAccountDetails from "../../components/Modals/ModalAccountDetails";
 const queryClient = new QueryClient();
 
 const AdminAccounts = () => {
@@ -25,7 +26,7 @@ const AdminAccounts = () => {
     };
 
     const handleRefetch = async () => {
-        await queryClient.refetchQueries(["users_dt"]);
+        await queryClient.refetchQueries(["accounts_dt"]);
     };
 
     const handleModalClose = () => {
@@ -52,8 +53,8 @@ const AdminAccounts = () => {
                         <TableAccounts isEditable={true} search={search} handleOpenModal={handleOpenModal} />
                     </QueryClientProvider>
                 </Card>
-                {/* {showModal && (
-                    <ModalUserDetails
+                {showModal && (
+                    <ModalAccountDetails
                         data={userData}
                         modalStatus={showModal}
                         errorMessage={errorMessage}
@@ -61,7 +62,7 @@ const AdminAccounts = () => {
                         handleModalClick={handleModalClose}
                         refresh={handleRefetch}
                     />
-                )} */}
+                )}
             </div>
         </>
     );

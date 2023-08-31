@@ -68,7 +68,12 @@ const TableAccounts = ({isEditable, search, handleOpenModal}: TableAccountsProps
                                 </td>
                                 {isEditable && (
                                     <td className="border-b border-gray-500">
-                                        <button className="px-2 py-1 border-blue-500 border text-blue-500 rounded transition duration-300 hover:bg-blue-700 hover:text-white focus:outline-none">
+                                        <button
+                                            className="px-2 py-1 border-blue-500 border text-blue-500 rounded transition duration-300 hover:bg-blue-700 hover:text-white focus:outline-none"
+                                            onClick={() => {
+                                                handleOpenModal && handleOpenModal(account);
+                                            }}
+                                        >
                                             View Details
                                         </button>
                                     </td>

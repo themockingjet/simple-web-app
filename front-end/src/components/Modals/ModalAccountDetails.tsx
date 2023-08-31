@@ -2,13 +2,13 @@
 //
 //
 
-import {useEffect, useRef} from "react";
-import Card from "../Card";
 import {FormProvider, useForm} from "react-hook-form";
+import Card from "../Card";
+import {useEffect, useRef} from "react";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-import FormEditUser from "../Forms/FormEditUser";
+import FormEditAccount from "../Forms/FormEditAccount";
 
-const ModalUserDetails = (props: any) => {
+const ModalAccountDetails = (props: any) => {
     //
     const {data, modalStatus, errorMessage, setErrorMessage, handleModalClick, refresh} = props;
     const ref = useRef<any>(null);
@@ -18,17 +18,14 @@ const ModalUserDetails = (props: any) => {
     const methods = useForm({
         mode: "onChange",
         defaultValues: {
-            first_name: data.first_name,
-            last_name: data.last_name,
-            birthday: new Date(data.birthday),
-            contact_no: data.contact_no,
+            //
         },
     });
 
     const onSubmit = methods.handleSubmit(async (formdata: any) => {
         //
         try {
-            const response = await axiosPrivate.post("/api/user/" + data.id, formdata);
+            const response = await axiosPrivate.post("/api/account/role/" + data.id, formdata);
             if (response) {
                 setErrorMessage({
                     status: "success",
@@ -40,6 +37,8 @@ const ModalUserDetails = (props: any) => {
         } catch (error: any) {
             if (!error.response) {
                 setErrorMessage({status: "error", message: "No Server Response."});
+            } else if (error.response.status === 403) {
+                setErrorMessage({status: "error", message: "You cannot change your own role."});
             } else {
                 setErrorMessage({status: "error", message: "Internal Server Error. Please contact support."});
             }
@@ -69,10 +68,10 @@ const ModalUserDetails = (props: any) => {
     return (
         <div className="absolute top-0 left-0 bg-black bg-opacity-50 max-w-screen max-w-screen w-full h-full">
             <div className="flex justify-center items-center w-full h-full relative">
-                <Card className="w-full max-w-md lg:max-w-2xl p-0" ref={ref}>
+                <Card className="w-full max-w-md lg:max-w-xl p-0" ref={ref}>
                     <div className="flex flex-col items-center">
                         <FormProvider {...methods}>
-                            <FormEditUser
+                            <FormEditAccount
                                 data={data}
                                 handleModalClick={handleModalClick}
                                 isDirty={methods.formState.isDirty}
@@ -91,4 +90,4 @@ const ModalUserDetails = (props: any) => {
     );
 };
 
-export default ModalUserDetails;
+export default ModalAccountDetails;
