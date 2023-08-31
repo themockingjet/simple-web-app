@@ -17,7 +17,8 @@ exports.findTableReservations = async (req, res) => {
 
 exports.findTableUsers = async (req, res) => {
     //
-    await Table.findTableUsers((err, result) => {
+    const search = `%${req.query.search}%`;
+    await Table.findTableUsers(search, (err, result) => {
         //
         if (err) return res.sendStatus(500);
 

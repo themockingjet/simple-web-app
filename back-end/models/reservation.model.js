@@ -72,7 +72,7 @@ exports.findReservationByRange = async (start, end, callback) => {
 };
 
 exports.updateReservation = async (id, data, callback) => {
-    await db.query("UPDATE reservations SET ? WHERE id = ?", [data, id], (error, result) => {
+    await db.query("UPDATE reservations SET ?, updated_at = NOW() WHERE id = ?", [data, id], (error, result) => {
         //
         if (error) {
             callback(error, null);

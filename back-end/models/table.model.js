@@ -27,10 +27,15 @@ exports.findTableReservations = async (data, callback) => {
     );
 };
 
-exports.findTableUsers = async (callback) => {
+exports.findTableUsers = async (data, callback) => {
     //
     await db.query(
-        `SELECT a.id, a.first_name, a.last_name, a.birthday, a.contact_no, a.account_id, b.email FROM users a LEFT JOIN accounts b ON b.id = a.account_id;`,
+        `SELECT a.id, a.first_name, a.last_name, a.birthday, a.contact_no, a.account_id, b.email 
+        FROM users a 
+        LEFT JOIN accounts b 
+        ON b.id = a.account_id
+        WHERE a.last_name LIKE ? OR a.first_name LIKE ? OR a.birthday LIKE ? OR a.contact_no LIKE ? OR b.email LIKE ?;`,
+        [data, data, data, data, data],
         (error, result) => {
             //
             if (error) {

@@ -49,7 +49,9 @@ exports.findUserByEmail = async (email, callback) => {
 };
 
 exports.updateUser = async (id, data, callback) => {
-    await db.query("UPDATE users SET ? WHERE id = ?", [data, id], (error, result) => {
+    //
+    await db.query("UPDATE users SET ?, updated_at = NOW() WHERE id = ?", [data, id], (error, result) => {
+        //
         if (error) {
             callback(error, null);
         } else {
