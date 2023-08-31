@@ -2,13 +2,13 @@
 //
 //
 
-import Card from "../Card";
-import FormEditReservation from "../Forms/FormEditReservation";
-import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-import {FormProvider, useForm} from "react-hook-form";
 import {useEffect, useRef} from "react";
+import Card from "../Card";
+import {FormProvider, useForm} from "react-hook-form";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import FormEditUser from "../Forms/FormEditUser";
 
-const ModalReservationDetails = (props: any) => {
+const ModalUserDetails = (props: any) => {
     //
     const {data, modalStatus, errorMessage, setErrorMessage, handleModalClick, refresh} = props;
     const ref = useRef<any>(null);
@@ -17,12 +17,18 @@ const ModalReservationDetails = (props: any) => {
 
     const methods = useForm({
         mode: "onChange",
+        defaultValues: {
+            first_name: data.first_name,
+            last_name: data.last_name,
+            birthday: new Date(data.birthday),
+            contact_no: data.contact_no,
+        },
     });
 
     const onSubmit = methods.handleSubmit(async (formdata) => {
         //
         try {
-            const response = await axiosPrivate.post("/api/reservation/" + data.id, formdata);
+            const response = await axiosPrivate.post("/api/user/" + data.id, formdata);
             if (response) {
                 setErrorMessage({
                     status: "success",
@@ -38,7 +44,6 @@ const ModalReservationDetails = (props: any) => {
                 setErrorMessage({status: "error", message: "Internal Server Error. Please contact support."});
             }
         }
-
         setTimeout(() => {
             setErrorMessage({status: "", message: ""});
         }, 5000);
@@ -67,7 +72,7 @@ const ModalReservationDetails = (props: any) => {
                 <Card className="w-full max-w-md lg:max-w-2xl p-0" ref={ref}>
                     <div className="flex flex-col items-center">
                         <FormProvider {...methods}>
-                            <FormEditReservation
+                            <FormEditUser
                                 data={data}
                                 handleModalClick={handleModalClick}
                                 isDirty={methods.formState.isDirty}
@@ -86,4 +91,4 @@ const ModalReservationDetails = (props: any) => {
     );
 };
 
-export default ModalReservationDetails;
+export default ModalUserDetails;

@@ -2,18 +2,18 @@
 //
 //
 
-import { useQuery } from "@tanstack/react-query";
-import { fetchUsers } from "../../fetchers/fetchUsers";
-import { useState } from "react";
+import {useQuery} from "@tanstack/react-query";
+import {fetchUsers} from "../../fetchers/fetchUsers";
+import {useState} from "react";
 
 export function useQueryUsers() {
     //
-    const { findTableUsers } = fetchUsers();
+    const {findTableUsers} = fetchUsers();
 
-    const queryTableUsers = (ITEMS_PER_PAGE: number) => {
+    const queryTableUsers = (ITEMS_PER_PAGE: number, search: string | undefined) => {
         //
         const [result, setResult] = useState([]);
-        const { isError, isLoading, data } = useQuery(["users"], findTableUsers, {
+        const {isError, isLoading, data, refetch} = useQuery(["users_dt", search], () => findTableUsers(search), {
             cacheTime: 600000,
             retry: 3,
             onSuccess: (data: any) => {
@@ -21,8 +21,8 @@ export function useQueryUsers() {
             },
         });
 
-        return { isError, isLoading, data, result, setResult };
+        return {isError, isLoading, data, result, setResult, refetch};
     };
 
-    return { queryTableUsers };
+    return {queryTableUsers};
 }

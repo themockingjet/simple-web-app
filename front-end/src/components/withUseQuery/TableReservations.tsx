@@ -14,10 +14,9 @@ interface TableReservationsProps {
     search?: string;
     isEditable: boolean;
     handleOpenModal?: (data: any) => void;
-    handleStatusChange?: (data: any, new_status: string) => void;
 }
 
-const TableReservations = ({isEditable, search, handleOpenModal, handleStatusChange}: TableReservationsProps) => {
+const TableReservations = ({isEditable, search, handleOpenModal}: TableReservationsProps) => {
     //
     const ITEMS_PER_PAGE = 10;
 
@@ -77,7 +76,7 @@ const TableReservations = ({isEditable, search, handleOpenModal, handleStatusCha
                                     </td>
                                     <td className="border-b border-gray-500 relative">
                                         <span
-                                            className={`rounded-full px-1 border transition duration-200 focus:outline-none 
+                                            className={`rounded-full px-2 border transition duration-200 focus:outline-none 
                                                         ${
                                                             (reservation.status === "PENDING" &&
                                                                 "bg-yellow-400 border-yellow-700 ") ||
@@ -95,10 +94,13 @@ const TableReservations = ({isEditable, search, handleOpenModal, handleStatusCha
                                     {isEditable && (
                                         <td className="border-b border-gray-500">
                                             <button
-                                                className="rounded-md border border-blue-700 bg-blue-500 px-2 py-1 text-white transition duration-200 hover:bg-blue-700 focus:outline-none"
+                                                className="px-2 py-1 border-blue-500 border text-blue-500 rounded transition duration-300 hover:bg-blue-700 hover:text-white focus:outline-none disabled:hover:bg-gray-400 disabled:hover:text-black"
                                                 onClick={() => {
                                                     handleOpenModal && handleOpenModal(reservation);
                                                 }}
+                                                disabled={
+                                                    reservation.status === "CANCELLED" || reservation.status === "COMPLETED"
+                                                }
                                             >
                                                 Change/Edit
                                             </button>

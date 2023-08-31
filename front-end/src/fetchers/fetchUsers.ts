@@ -8,11 +8,14 @@ export function fetchUsers() {
     //
     const axiosPrivate = useAxiosPrivate();
 
-    const findTableUsers = async () => {
+    const findTableUsers = async (search: string | undefined) => {
         //
-        const response = await axiosPrivate.get("/api/table/users").then((res) => res.data);
+        if (search === undefined) {
+            search = "";
+        }
+        const response = await axiosPrivate.get("/api/table/users?search=" + search).then((res) => res.data);
         return response;
     };
 
-    return { findTableUsers };
+    return {findTableUsers};
 }

@@ -5,21 +5,23 @@
 import Loading from "../Loading";
 import ErrorLoad from "../ErrorLoad";
 
-import { usePagination } from "@mantine/hooks";
-import { Pagination } from "@mantine/core";
-import { useQueryUsers } from "../../hooks/useQuery/useQueryUsers";
-import { format } from "date-fns";
+import {usePagination} from "@mantine/hooks";
+import {Pagination} from "@mantine/core";
+import {useQueryUsers} from "../../hooks/useQuery/useQueryUsers";
+import {format} from "date-fns";
 
 interface TableUsersProps {
-    showButton: boolean;
+    search?: string;
+    isEditable: boolean;
+    handleOpenModal?: (data: any) => void;
 }
 
-const TableUsers = ({ showButton }: TableUsersProps) => {
+const TableUsers = ({isEditable, search, handleOpenModal}: TableUsersProps) => {
     //
     const ITEMS_PER_PAGE = 10;
 
-    const { queryTableUsers } = useQueryUsers();
-    const { isError, isLoading, data, result, setResult } = queryTableUsers(ITEMS_PER_PAGE);
+    const {queryTableUsers} = useQueryUsers();
+    const {isError, isLoading, data, result, setResult} = queryTableUsers(ITEMS_PER_PAGE, search);
 
     const pagination = usePagination({
         total: Math.ceil(data?.length / ITEMS_PER_PAGE),
@@ -48,25 +50,30 @@ const TableUsers = ({ showButton }: TableUsersProps) => {
                 <table className="shrink-0 table-fixed w-full text-center text-sm md:text-base ">
                     <thead>
                         <tr>
-                            <th className="w-12 lg:w-20 border-y-2 border-blue-300 text-blue-500 py-2">ID</th>
-                            <th className="w-26 border-y-2 border-blue-300 text-blue-500 py-2">Full Name</th>
+                            <th className="w-44 border-y-2 border-blue-300 text-blue-500 py-2">Full Name</th>
                             <th className="w-24 border-y-2 border-blue-300 text-blue-500 py-2">Birthday</th>
                             <th className="w-44 border-y-2 border-blue-300 text-blue-500 py-2">Contact</th>
                             <th className="w-36 border-y-2 border-blue-300 text-blue-500 py-2">Email</th>
-                            {showButton && <th className="w-28 border-y-2 border-blue-500 bg-blue-500"></th>}
+                            {isEditable && <th className="w-28 border-y-2 border-blue-500 bg-blue-500"></th>}
                         </tr>
                     </thead>
                     <tbody>
                         {result?.map((user: any, index: any) => (
                             <tr key={index}>
-                                <td className="py-1 border-b border-gray-500">{user.id}</td>
                                 <td className="border-b border-gray-500">{user.first_name + " " + user.last_name}</td>
-                                <td className="border-b border-gray-500">{format(new Date(user.birthday), "dd/MM/yyyy")}</td>
+                                <td className="border-b border-gray-500">
+                                    {format(new Date(user.birthday), "MMM dd, yyyy")}
+                                </td>
                                 <td className="border-b border-gray-500">{user.contact_no}</td>
                                 <td className="border-b border-gray-500">{user.email}</td>
-                                {showButton && (
+                                {isEditable && (
                                     <td className="border-b border-gray-500">
-                                        <button className="px-2 py-1 border-blue-500 border text-blue-500 rounded transition duration-300 hover:bg-blue-700 hover:text-white focus:outline-none">
+                                        <button
+                                            className="px-2 py-1 border-blue-500 border text-blue-500 rounded transition duration-300 hover:bg-blue-700 hover:text-white focus:outline-none"
+                                            onClick={() => {
+                                                handleOpenModal && handleOpenModal(user);
+                                            }}
+                                        >
                                             View Details
                                         </button>
                                     </td>

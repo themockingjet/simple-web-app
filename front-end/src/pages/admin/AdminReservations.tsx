@@ -8,21 +8,18 @@ import TableReservations from "../../components/withUseQuery/TableReservations";
 import ModalReservationDetails from "../../components/Modals/ModalReservationDetails";
 
 import {useDebouncedState} from "@mantine/hooks";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
-import ModalChangeStatus from "../../components/Modals/ModalChangeStatus";
 const queryClient = new QueryClient();
 
 const AdminReservations = () => {
     //
     const [errorMessage, setErrorMessage] = useState({status: "", message: ""});
 
-    const [isShow, setIsShow] = useState(false);
-    const [isConfirmation, setIsConfirmation] = useState(false);
+    const [showModal, setShowModal] = useState(false);
     const [search, setSearch] = useDebouncedState("", 300);
 
-    const [newStatus, setNewStatus] = useState("");
     const [rsvData, setRsvData] = useState({
         id: 0,
         first_name: "",
@@ -34,8 +31,8 @@ const AdminReservations = () => {
         status: "",
     });
 
-    const openModal = (data: any) => {
-        setIsShow(true);
+    const handleOpenModal = (data: any) => {
+        setShowModal(true);
         setRsvData(data);
     };
 
@@ -43,21 +40,10 @@ const AdminReservations = () => {
         await queryClient.refetchQueries(["reservations_dt"]);
     };
 
-    const onModalClick = () => {
-        setIsShow(false);
+    const handleModalClose = () => {
+        setShowModal(false);
     };
 
-    const openConfirmationModal = (data: any, new_status: string) => {
-        //
-        setIsConfirmation(true);
-        setRsvData(data);
-        setNewStatus(new_status);
-        console.log("open");
-    };
-
-    const closeConfirmationModal = () => {
-        setIsConfirmation(false);
-    };
     return (
         <>
             <div id="my-component" className="grid auto-rows-min grid-cols-4 grid-flow-row gap-4">
@@ -73,33 +59,17 @@ const AdminReservations = () => {
 
                 <Card className="p-0 col-span-4 min-h-[29rem] max-h-[29rem] md:min-h-[32rem] md:max-h-[32rem] flex flex-col overflow-x-auto overflow-y-hidden pb-2">
                     <QueryClientProvider client={queryClient}>
-                        <TableReservations
-                            isEditable={true}
-                            search={search}
-                            handleOpenModal={openModal}
-                            handleStatusChange={openConfirmationModal}
-                        />
+                        <TableReservations isEditable={true} search={search} handleOpenModal={handleOpenModal} />
                     </QueryClientProvider>
                 </Card>
 
-                {isShow && (
+                {showModal && (
                     <ModalReservationDetails
                         data={rsvData}
-                        modalStatus={isShow}
+                        modalStatus={showModal}
                         errorMessage={errorMessage}
                         setErrorMessage={setErrorMessage}
-                        handleModalClick={onModalClick}
-                        refresh={handleRefetch}
-                    />
-                )}
-                {isConfirmation && (
-                    <ModalChangeStatus
-                        data={rsvData}
-                        newStatus={newStatus}
-                        modalStatus={isConfirmation}
-                        errorMessage={errorMessage}
-                        setErrorMessage={setErrorMessage}
-                        handleCloseModal={closeConfirmationModal}
+                        handleModalClick={handleModalClose}
                         refresh={handleRefetch}
                     />
                 )}

@@ -2,8 +2,8 @@
 //
 //
 
-import { useFormContext } from "react-hook-form";
-import { cn } from "../../utils/utils";
+import {useFormContext} from "react-hook-form";
+import {cn} from "../../utils/utils";
 import Input from "../Input";
 
 interface FormInputProps {
@@ -30,13 +30,12 @@ interface FormInputProps {
     onChange?: (e: any) => void;
 }
 
-const FormInput = ({ id, name, label, validation, ...props }: FormInputProps) => {
+const FormInput = ({id, name, label, validation, ...props}: FormInputProps) => {
     const {
         register,
-        formState: { errors },
+        formState: {errors},
         watch,
     } = useFormContext();
-
     return (
         <div className={cn("flex flex-col px-3 w-full h-24", props.divClassName)}>
             <label htmlFor={id} className={cn("w-full", props.labelClassName)}>
@@ -52,7 +51,7 @@ const FormInput = ({ id, name, label, validation, ...props }: FormInputProps) =>
                         )}
                         type={props.type}
                         {...register(name, {
-                            required: { value: true, message: "Required" },
+                            required: {value: true, message: "Required"},
                             validate: (value) => value === watch("password") || "Passwords do not match",
                         })}
                     />

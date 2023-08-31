@@ -41,19 +41,19 @@ const AdminDashboard = () => {
                     </Card>
                 </div>
 
-                <Card className="col-span-4 min-h-[28rem] max-h-[28rem] min-h-[28rem] max-h-[28rem] md:min-h-[32rem] md:max-h-[32rem] flex flex-col overflow-x-auto overflow-y-hidden pb-2">
+                <Card className="p-0 col-span-4 min-h-[28rem] max-h-[28rem] min-h-[28rem] max-h-[28rem] md:min-h-[32rem] md:max-h-[32rem] flex flex-col overflow-x-auto overflow-y-hidden pb-2">
                     <QueryClientProvider client={queryClient}>
                         <TableReservations isEditable={false} />
                     </QueryClientProvider>
                 </Card>
 
-                <Card className="col-span-4 lg:col-span-2 min-h-[28rem] max-h-[28rem] min-h-[28rem] max-h-[28rem] md:min-h-[32rem] md:max-h-[32rem] flex flex-col overflow-x-auto overflow-y-hidden pb-2">
+                <Card className="p-0 col-span-4 lg:col-span-2 min-h-[28rem] max-h-[28rem] min-h-[28rem] max-h-[28rem] md:min-h-[32rem] md:max-h-[32rem] flex flex-col overflow-x-auto overflow-y-hidden pb-2">
                     <QueryClientProvider client={queryClient}>
                         <TableUsers showButton={false} />
                     </QueryClientProvider>
                 </Card>
 
-                <Card className="col-span-4 lg:col-span-2 min-h-[28rem] max-h-[28rem] min-h-[28rem] max-h-[28rem] md:min-h-[32rem] md:max-h-[32rem] flex flex-col overflow-x-auto overflow-y-hidden pb-2">
+                <Card className="p-0 col-span-4 lg:col-span-2 min-h-[28rem] max-h-[28rem] min-h-[28rem] max-h-[28rem] md:min-h-[32rem] md:max-h-[32rem] flex flex-col overflow-x-auto overflow-y-hidden pb-2">
                     <QueryClientProvider client={queryClient}>
                         <TableAccounts showButton={false} />
                     </QueryClientProvider>

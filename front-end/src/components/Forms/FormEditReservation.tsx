@@ -16,25 +16,9 @@ import {setHours} from "date-fns";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 const queryClient = new QueryClient();
 
-interface FormEditReservationProps {
+const FormEditReservation = (props: any) => {
     //
-    data: {
-        id: number;
-        first_name: string;
-        last_name: string;
-        email: string;
-        contact_no: string;
-        date: Date;
-        time: string;
-        status: string;
-    };
-    isDirty?: boolean;
-    handleModalClick?: (e: any) => void;
-    onSubmit: () => void;
-}
-
-const FormEditReservation = ({data, handleModalClick, onSubmit, isDirty}: FormEditReservationProps) => {
-    //
+    const {data, handleModalClick, onSubmit, isDirty} = props;
     const methods = useFormContext();
 
     const [date, setDate] = useState<any>(new Date(data.date));
@@ -112,32 +96,36 @@ const FormEditReservation = ({data, handleModalClick, onSubmit, isDirty}: FormEd
                             />
                         </QueryClientProvider>
                     </div>
-                    <label htmlFor="status">Status:</label>
-                    <select
-                        id="status"
-                        className={`rounded-full pl-1 w-36 border-2 transition duration-200 focus:outline-none hover:cursor-pointer focus:bg-white-300`}
-                        defaultValue={data.status}
-                        {...methods.register("status", {required: true})}
-                    >
-                        {data.status === "PENDING" && (
-                            <>
-                                <option value="PENDING" className="hidden">
-                                    PENDING
-                                </option>
-                                <option value="CANCELLED">CANCELLED</option>
-                                <option value="CONFIRMED">CONFIRMED</option>
-                            </>
-                        )}
-                        {data.status === "CONFIRMED" && (
-                            <>
-                                <option value="CONFIRMED" className="hidden">
-                                    CONFIRMED
-                                </option>
-                                <option value="CANCELLED">CANCELLED</option>
-                                <option value="COMPLETED">COMPLETED</option>
-                            </>
-                        )}
-                    </select>
+                    {data.status !== "CANCELLED" && data.status !== "COMPLETED" && (
+                        <>
+                            <label htmlFor="status">Status:</label>
+                            <select
+                                id="status"
+                                className={`rounded-full pl-1 w-36 border-2 transition duration-200 focus:outline-none hover:cursor-pointer focus:bg-white-300`}
+                                defaultValue={data.status}
+                                {...methods.register("status", {required: true})}
+                            >
+                                {data.status === "PENDING" && (
+                                    <>
+                                        <option value="PENDING" className="hidden">
+                                            PENDING
+                                        </option>
+                                        <option value="CANCELLED">CANCELLED</option>
+                                        <option value="CONFIRMED">CONFIRMED</option>
+                                    </>
+                                )}
+                                {data.status === "CONFIRMED" && (
+                                    <>
+                                        <option value="CONFIRMED" className="hidden">
+                                            CONFIRMED
+                                        </option>
+                                        <option value="CANCELLED">CANCELLED</option>
+                                        <option value="COMPLETED">COMPLETED</option>
+                                    </>
+                                )}
+                            </select>
+                        </>
+                    )}
                     <div className="flex justify-center space-x-4 w-full py-5">
                         <button
                             type="submit"
