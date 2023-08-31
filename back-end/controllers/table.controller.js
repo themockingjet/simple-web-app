@@ -28,7 +28,12 @@ exports.findTableUsers = async (req, res) => {
 
 exports.findTableAccounts = async (req, res) => {
     //
-    const search = `%${req.query.search}%`;
+    let search = `%${req.query.search}%`;
+    if (req.query.search.match(/admin/gi)) {
+        search = `1`;
+    } else if (req.query.search.match(/user/gi)) {
+        search = `0`;
+    }
     await Table.findTableAccounts(search, (err, result) => {
         //
         if (err) return res.sendStatus(500);

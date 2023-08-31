@@ -56,7 +56,6 @@ exports.findTableAccounts = async (data, callback) => {
         [data, data, data],
         (error, result) => {
             //
-            console.log(error);
             if (error) {
                 callback(error, null);
             } else {
