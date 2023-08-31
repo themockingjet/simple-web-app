@@ -12,11 +12,12 @@ import {format} from "date-fns";
 
 interface TableReservationsProps {
     search?: string;
-    showButton: boolean;
-    handleOpenModal?: (e: any) => void;
+    isEditable: boolean;
+    handleOpenModal?: (data: any) => void;
+    handleStatusChange?: (data: any, new_status: string) => void;
 }
 
-const TableReservations = ({showButton, search, handleOpenModal}: TableReservationsProps) => {
+const TableReservations = ({isEditable, search, handleOpenModal, handleStatusChange}: TableReservationsProps) => {
     //
     const ITEMS_PER_PAGE = 10;
 
@@ -56,7 +57,7 @@ const TableReservations = ({showButton, search, handleOpenModal}: TableReservati
                             <th className="w-24 border-y-2 border-blue-300 text-blue-500 py-2">Date</th>
                             <th className="w-20 border-y-2 border-blue-300 text-blue-500 py-2">Time</th>
                             <th className="w-24 border-y-2 border-blue-300 text-blue-500 py-2">Status</th>
-                            {showButton && <th className="w-32 border-y-2 border-blue-500 bg-blue-500"></th>}
+                            {isEditable && <th className="w-32 border-y-2 border-blue-500 bg-blue-500"></th>}
                         </tr>
                     </thead>
                     <tbody>
@@ -74,25 +75,24 @@ const TableReservations = ({showButton, search, handleOpenModal}: TableReservati
                                     <td className="border-b border-gray-500">
                                         {format(new Date(`2000-01-01 ${reservation.time}`), "hh:mm a")}
                                     </td>
-                                    <td className="border-b border-gray-500">
-                                        <button
+                                    <td className="border-b border-gray-500 relative">
+                                        <span
                                             className={`rounded-full px-1 border transition duration-200 focus:outline-none 
-                                        ${
-                                            (reservation.status === "COMPLETED" &&
-                                                "bg-green-500 border-green-700 hover:bg-green-700") ||
-                                            (reservation.status === "PENDING" &&
-                                                "bg-yellow-400 border-yellow-700 hover:bg-yellow-700") ||
-                                            (reservation.status === "CANCELLED" &&
-                                                "bg-red-500 border-red-700 hover:bg-red-700")
-                                        }`}
-                                            onClick={() => {
-                                                handleOpenModal && handleOpenModal(reservation);
-                                            }}
+                                                        ${
+                                                            (reservation.status === "PENDING" &&
+                                                                "bg-yellow-400 border-yellow-700 ") ||
+                                                            (reservation.status === "CONFIRMED" &&
+                                                                "bg-slate-400 border-slate-700 ") ||
+                                                            (reservation.status === "CANCELLED" &&
+                                                                "bg-red-500 border-red-700 ") ||
+                                                            (reservation.status === "COMPLETED" &&
+                                                                "bg-green-500 border-green-700 ")
+                                                        }`}
                                         >
                                             {reservation.status}
-                                        </button>
+                                        </span>
                                     </td>
-                                    {showButton && (
+                                    {isEditable && (
                                         <td className="border-b border-gray-500">
                                             <button
                                                 className="rounded-md border border-blue-700 bg-blue-500 px-2 py-1 text-white transition duration-200 hover:bg-blue-700 focus:outline-none"
@@ -109,6 +109,7 @@ const TableReservations = ({showButton, search, handleOpenModal}: TableReservati
                     </tbody>
                 </table>
             </div>
+
             <div className="sticky left-0 flex justify-center items-center h-8 lg:h-10 bg-white">
                 <div className="flex justify-center">
                     <Pagination

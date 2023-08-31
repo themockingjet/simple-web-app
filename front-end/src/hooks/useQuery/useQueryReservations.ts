@@ -2,34 +2,37 @@
 //
 //
 
-import { useQuery } from "@tanstack/react-query";
-import { fetchReservations } from "../../fetchers/fetchReservations";
-import { useState } from "react";
+import {useQuery} from "@tanstack/react-query";
+import {fetchReservations} from "../../fetchers/fetchReservations";
+import {useState} from "react";
 
 export function useQueryReservations() {
     //
-    const { findTableReservations, findAllReservations, findReservationByDate, findReservationsByRange } =
-        fetchReservations();
+    const {findTableReservations, findAllReservations, findReservationByDate, findReservationsByRange} = fetchReservations();
 
     const queryTableReservations = (ITEMS_PER_PAGE: number, search: string | undefined) => {
         //
         const [result, setResult] = useState([]);
-        const { isError, isLoading, data } = useQuery(["reservations_dt", search], () => findTableReservations(search), {
-            cacheTime: 300000,
-            staleTime: 2000,
-            retry: 10,
-            onSuccess: (data: any) => {
-                setResult(data.slice(0, ITEMS_PER_PAGE));
-            },
-        });
+        const {isError, isLoading, data, refetch} = useQuery(
+            ["reservations_dt", search],
+            () => findTableReservations(search),
+            {
+                cacheTime: 300000,
+                staleTime: 2000,
+                retry: 10,
+                onSuccess: (data: any) => {
+                    setResult(data.slice(0, ITEMS_PER_PAGE));
+                },
+            }
+        );
 
-        return { isLoading, isError, data, result, setResult };
+        return {isLoading, isError, data, result, setResult, refetch};
     };
 
     const queryReservations = (ITEMS_PER_PAGE: number) => {
         //
         const [result, setResult] = useState([]);
-        const { isError, isLoading, data } = useQuery(["reservations"], findAllReservations, {
+        const {isError, isLoading, data} = useQuery(["reservations"], findAllReservations, {
             cacheTime: 300000,
             staleTime: 2000,
             retry: 3,
@@ -38,24 +41,24 @@ export function useQueryReservations() {
             },
         });
 
-        return { isLoading, isError, data, result, setResult };
+        return {isLoading, isError, data, result, setResult};
     };
 
     const queryReservationByDate = (date: Date | null) => {
         //
-        const { isError, isLoading, data } = useQuery(["reservations", date], () => findReservationByDate(date), {
+        const {isError, isLoading, data} = useQuery(["reservations", date], () => findReservationByDate(date), {
             cacheTime: 300000,
             staleTime: 2000,
-            retry: 10,
+            retry: 3,
             enabled: !!date,
         });
 
-        return { isLoading, isError, data };
+        return {isLoading, isError, data};
     };
 
     const queryReservationsByRange = (start: string, end: string) => {
         //
-        const { isError, isLoading, data } = useQuery(
+        const {isError, isLoading, data} = useQuery(
             ["reservations_range", start, end],
             () => findReservationsByRange(start, end),
             {
@@ -72,5 +75,5 @@ export function useQueryReservations() {
         };
     };
 
-    return { queryTableReservations, queryReservations, queryReservationByDate, queryReservationsByRange };
+    return {queryTableReservations, queryReservations, queryReservationByDate, queryReservationsByRange};
 }

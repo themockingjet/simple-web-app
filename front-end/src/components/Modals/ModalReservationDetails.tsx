@@ -5,8 +5,8 @@
 import Card from "../Card";
 import FormEditReservation from "../Forms/FormEditReservation";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-import { FormProvider, useForm } from "react-hook-form";
-import { useEffect, useRef } from "react";
+import {FormProvider, useForm} from "react-hook-form";
+import {useEffect, useRef} from "react";
 
 interface FormReservationDetailsProps {
     //
@@ -18,15 +18,25 @@ interface FormReservationDetailsProps {
         contact_no: string;
         date: Date;
         time: string;
+        status: string;
     };
     modalStatus: boolean;
-    setErrorMessage: React.Dispatch<React.SetStateAction<{ status: string; message: string }>>;
+    errorMessage: {status: string; message: string};
+    setErrorMessage: React.Dispatch<React.SetStateAction<{status: string; message: string}>>;
     handleModalClick?: () => void;
+    refresh?: () => void;
 }
 
-const ModalReservationDetails = ({ data, modalStatus, setErrorMessage, handleModalClick }: FormReservationDetailsProps) => {
+const ModalReservationDetails = ({
+    data,
+    modalStatus,
+    errorMessage,
+    setErrorMessage,
+    handleModalClick,
+    refresh,
+}: FormReservationDetailsProps) => {
     //
-    const ref = useRef<any>();
+    const ref = useRef<any>(null);
     const axiosPrivate = useAxiosPrivate();
 
     const methods = useForm({
@@ -43,17 +53,19 @@ const ModalReservationDetails = ({ data, modalStatus, setErrorMessage, handleMod
                     message: "Success! Reservation has been changed successfully.",
                 });
                 handleModalClick && handleModalClick();
+                refresh && refresh();
             }
         } catch (error: any) {
             if (!error.response) {
-                setErrorMessage({ status: "error", message: "No Server Response." });
+                setErrorMessage({status: "error", message: "No Server Response."});
             } else {
-                setErrorMessage({ status: "error", message: "Internal Server Error." });
+                setErrorMessage({status: "error", message: "Internal Server Error. Please contact support."});
             }
         }
+
         setTimeout(() => {
-            setErrorMessage({ status: "", message: "" });
-        }, 3000);
+            setErrorMessage({status: "", message: ""});
+        }, 5000);
     });
 
     useEffect(() => {
@@ -66,17 +78,16 @@ const ModalReservationDetails = ({ data, modalStatus, setErrorMessage, handleMod
                 handleModalClick && handleModalClick();
             }
         };
-        document.body.style.overflow = "hidden";
+
         document.addEventListener("click", checkIfClickedOutside, true);
         return () => {
-            document.body.style.overflow = "unset";
             document.removeEventListener("click", checkIfClickedOutside);
         };
     }, [modalStatus]);
 
     return (
         <div className="absolute top-0 left-0 bg-black bg-opacity-50 max-w-screen max-w-screen w-full h-full">
-            <div className="flex justify-center items-center w-full h-full">
+            <div className="flex justify-center items-center w-full h-full relative">
                 <Card className="w-full max-w-md lg:max-w-2xl p-0" ref={ref}>
                     <div className="flex flex-col items-center">
                         <FormProvider {...methods}>
@@ -89,6 +100,11 @@ const ModalReservationDetails = ({ data, modalStatus, setErrorMessage, handleMod
                         </FormProvider>
                     </div>
                 </Card>
+                {errorMessage.status && errorMessage.status === "error" && (
+                    <span className={`bg-red-300 px-4 py-1 absolute top-10 right-10 rounded-md border border-red-500`}>
+                        {errorMessage.message}
+                    </span>
+                )}
             </div>
         </div>
     );

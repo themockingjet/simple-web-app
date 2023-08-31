@@ -25,7 +25,8 @@ export function fetchReservations() {
 
     const findReservationByDate = async (date: Date | null) => {
         //
-        const response = await axiosPrivate.get("/api/reservation/date/" + date).then((res) => res.data);
+        const dateFormat = date && `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+        const response = await axiosPrivate.get("/api/reservation/date/" + dateFormat).then((res) => res.data);
         return response;
     };
 

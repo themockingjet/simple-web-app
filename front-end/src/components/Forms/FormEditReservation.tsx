@@ -5,15 +5,15 @@
 import FormInputDate from "./FormInputDate";
 import FormInputTime from "./FormInputTime";
 import Input from "../Input";
-import { useState } from "react";
-import { dateValidation, timeValidation } from "../../utils/validateReservation";
+import {useState} from "react";
+import {dateValidation, timeValidation} from "../../utils/validateReservation";
 import "react-datepicker/dist/react-datepicker.css";
 import "../../assets/datepicker.css";
 
-import { useFormContext } from "react-hook-form";
-import { setHours } from "date-fns";
+import {useFormContext} from "react-hook-form";
+import {setHours} from "date-fns";
 
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 const queryClient = new QueryClient();
 
 interface FormEditReservationProps {
@@ -26,13 +26,14 @@ interface FormEditReservationProps {
         contact_no: string;
         date: Date;
         time: string;
+        status: string;
     };
     isDirty?: boolean;
     handleModalClick?: (e: any) => void;
     onSubmit: () => void;
 }
 
-const FormEditReservation = ({ data, handleModalClick, onSubmit, isDirty }: FormEditReservationProps) => {
+const FormEditReservation = ({data, handleModalClick, onSubmit, isDirty}: FormEditReservationProps) => {
     //
     const methods = useFormContext();
 
@@ -98,7 +99,9 @@ const FormEditReservation = ({ data, handleModalClick, onSubmit, isDirty }: Form
                                 selectedDate={date}
                                 onDateChange={(e: Date) => {
                                     setDate(e);
-                                    methods.resetField("time");
+                                    methods.resetField("time", {
+                                        defaultValue: null,
+                                    });
                                 }}
                             />
                             <FormInputTime
@@ -109,6 +112,32 @@ const FormEditReservation = ({ data, handleModalClick, onSubmit, isDirty }: Form
                             />
                         </QueryClientProvider>
                     </div>
+                    <label htmlFor="status">Status:</label>
+                    <select
+                        id="status"
+                        className={`rounded-full pl-1 w-36 border-2 transition duration-200 focus:outline-none hover:cursor-pointer focus:bg-white-300`}
+                        defaultValue={data.status}
+                        {...methods.register("status", {required: true})}
+                    >
+                        {data.status === "PENDING" && (
+                            <>
+                                <option value="PENDING" className="hidden">
+                                    PENDING
+                                </option>
+                                <option value="CANCELLED">CANCELLED</option>
+                                <option value="CONFIRMED">CONFIRMED</option>
+                            </>
+                        )}
+                        {data.status === "CONFIRMED" && (
+                            <>
+                                <option value="CONFIRMED" className="hidden">
+                                    CONFIRMED
+                                </option>
+                                <option value="CANCELLED">CANCELLED</option>
+                                <option value="COMPLETED">COMPLETED</option>
+                            </>
+                        )}
+                    </select>
                     <div className="flex justify-center space-x-4 w-full py-5">
                         <button
                             type="submit"

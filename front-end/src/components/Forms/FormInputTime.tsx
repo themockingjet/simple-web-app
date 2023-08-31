@@ -2,10 +2,10 @@
 //
 //
 import DatePicker from "react-datepicker";
-import { cn } from "../../utils/utils";
-import { Controller, useFormContext } from "react-hook-form";
-import { useOccupiedTimes } from "../../hooks/useOccupiedTimes";
-import { useEffect } from "react";
+import {cn} from "../../utils/utils";
+import {Controller, useFormContext} from "react-hook-form";
+import {useOccupiedTimes} from "../../hooks/useOccupiedTimes";
+import {useEffect, useState} from "react";
 
 interface FormInputTimeProps {
     //
@@ -27,16 +27,17 @@ interface FormInputTimeProps {
     onDateChange?: (e: any) => void;
 }
 
-const FormInputTime = ({ id, name, label, validation, selectedTime, ...props }: FormInputTimeProps) => {
+const FormInputTime = ({id, name, label, validation, selectedTime, ...props}: FormInputTimeProps) => {
     //
     const {
         control,
-        formState: { errors },
+        formState: {errors},
     } = useFormContext();
 
     const date = props.date;
+    const {timeFilter, filterPassedTime} = useOccupiedTimes(date);
+    const [time, setTime] = useState<any>();
 
-    const { timeFilter, filterPassedTime } = useOccupiedTimes(date);
     useEffect(() => {}, [date, timeFilter]);
 
     return (
@@ -49,13 +50,12 @@ const FormInputTime = ({ id, name, label, validation, selectedTime, ...props }: 
                 control={control}
                 defaultValue={selectedTime}
                 rules={validation}
-                render={({ field }) => (
+                render={({field}) => (
                     <DatePicker
                         id={id}
                         className={cn("border border-gray-300 rounded-md p-1 focus:outline-none", props.inputClassName)}
                         onChange={(e: Date) => {
                             field.onChange(e);
-                            props.onDateChange && props.onDateChange(e);
                         }}
                         selected={field.value}
                         disabled={!date}
