@@ -46,8 +46,11 @@ exports.findReservationById = async (req, res) => {
 exports.findReservationByDate = async (req, res) => {
     //
     if (!req.params.date) return res.sendStatus(400);
-
-    await Reservation.findReservationByDate(req.params.date, (err, result) => {
+    const date = `${new Date(req.params.date).getFullYear()}-${new Date(req.params.date).getMonth() + 1}-${new Date(
+        req.params.date
+    ).getDate()}`;
+    console.log(date);
+    await Reservation.findReservationByDate(date, (err, result) => {
         //
         if (err) return res.sendStatus(500);
         if (result.length === 0) return res.sendStatus(404);
