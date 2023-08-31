@@ -47,10 +47,7 @@ exports.findReservationByDate = async (req, res) => {
     //
     if (!req.params.date) return res.sendStatus(400);
 
-    const date = new Date(req.params.date);
-    const dateFormat = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
-
-    await Reservation.findReservationByDate(dateFormat, (err, result) => {
+    await Reservation.findReservationByDate(req.params.date, (err, result) => {
         //
         if (err) return res.sendStatus(500);
         if (result.length === 0) return res.sendStatus(404);
@@ -92,13 +89,20 @@ exports.findReservationByRange = async (req, res) => {
 
 exports.updateReservation = async (req, res) => {
     //
-    await Reservation.updateReservation(req.params.id, req.body, (err, result) => {
+    const id = req.params.id;
+    let data = {
+        date: new Date(req.body.date),
+        time: new Date(req.body.time),
+    };
+
+    data.date = `${data.date.getFullYear()}-${data.date.getMonth() + 1}-${data.date.getDate()}`;
+    data.time = `${data.time.getHours().toString().padStart(2, 0)}:${data.time.getMinutes().toString().padStart(2, 0)}`;
+
+    await Reservation.updateReservation(id, data, (err, result) => {
         //
-        if (err) {
-            res.sendStatus(500);
-        } else {
-            res.sendStatus(200);
-        }
+        if (err) return res.sendStatus(500);
+
+        res.sendStatus(200);
     });
 };
 
