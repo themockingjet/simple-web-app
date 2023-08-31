@@ -7,7 +7,6 @@ const Table = require("../models/table.model");
 exports.findTableReservations = async (req, res) => {
     //
     const search = `%${req.query.search}%`;
-    console.log(search);
     await Table.findTableReservations(search, (err, result) => {
         //
         if (err) return res.sendStatus(500);

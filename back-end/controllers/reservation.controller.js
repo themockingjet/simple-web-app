@@ -46,10 +46,8 @@ exports.findReservationById = async (req, res) => {
 exports.findReservationByDate = async (req, res) => {
     //
     if (!req.params.date) return res.sendStatus(400);
-    const date = `${new Date(req.params.date).getFullYear()}-${new Date(req.params.date).getMonth() + 1}-${new Date(
-        req.params.date
-    ).getDate()}`;
-    console.log(date);
+    const date = req.params.date;
+
     await Reservation.findReservationByDate(date, (err, result) => {
         //
         if (err) return res.sendStatus(500);
@@ -96,6 +94,7 @@ exports.updateReservation = async (req, res) => {
     let data = {
         date: new Date(req.body.date),
         time: new Date(req.body.time),
+        status: req.body.status,
     };
 
     data.date = `${data.date.getFullYear()}-${data.date.getMonth() + 1}-${data.date.getDate()}`;

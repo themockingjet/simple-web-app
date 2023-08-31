@@ -14,7 +14,7 @@ exports.findTableReservations = async (data, callback) => {
         LEFT JOIN accounts c
         ON c.id = b.account_id
         WHERE b.first_name LIKE ? OR b.last_name LIKE ? OR b.contact_no LIKE ? OR a.date LIKE ? OR a.time LIKE ? OR a.status LIKE ?
-        ORDER BY a.date DESC;`,
+        ORDER BY a.date DESC, a.time ASC;`,
         [data, data, data, data, data, data],
         (error, result) => {
             //
