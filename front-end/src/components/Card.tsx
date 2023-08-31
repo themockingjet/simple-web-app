@@ -2,6 +2,7 @@
 //
 //
 
+import { forwardRef } from "react";
 import { cn } from "../utils/utils";
 
 interface CardInterface {
@@ -10,8 +11,12 @@ interface CardInterface {
     children: React.ReactNode;
 }
 
-const Card = ({ className, children }: CardInterface) => {
-    return <div className={cn("bg-white rounded-lg shadow-lg drop-shadow-md", className)}>{children}</div>;
-};
+const Card = forwardRef<HTMLDivElement, CardInterface>(({ className, children }: CardInterface, ref) => {
+    return (
+        <div ref={ref} className={cn("bg-white rounded-lg shadow-lg drop-shadow-md p-2", className)}>
+            {children}
+        </div>
+    );
+});
 
 export default Card;

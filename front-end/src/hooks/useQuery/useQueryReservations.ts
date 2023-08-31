@@ -30,7 +30,8 @@ export function useQueryReservations() {
         //
         const [result, setResult] = useState([]);
         const { isError, isLoading, data } = useQuery(["reservations"], findAllReservations, {
-            staleTime: 600000,
+            cacheTime: 300000,
+            staleTime: 2000,
             retry: 3,
             onSuccess: (data: any) => {
                 setResult(data.slice(0, ITEMS_PER_PAGE));
@@ -42,10 +43,10 @@ export function useQueryReservations() {
 
     const queryReservationByDate = (date: Date | null) => {
         //
-        const { isError, isLoading, data } = useQuery(["reservation_by_date", date], () => findReservationByDate(date), {
-            staleTime: 600000,
-            retry: 3,
-            retryDelay: 5000,
+        const { isError, isLoading, data } = useQuery(["reservations", date], () => findReservationByDate(date), {
+            cacheTime: 300000,
+            staleTime: 2000,
+            retry: 10,
             enabled: !!date,
         });
 
@@ -58,8 +59,9 @@ export function useQueryReservations() {
             ["reservations_range", start, end],
             () => findReservationsByRange(start, end),
             {
-                staleTime: 600000,
-                retryDelay: 5000,
+                cacheTime: 300000,
+                staleTime: 2000,
+                retry: 3,
             }
         );
 

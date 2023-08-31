@@ -13,9 +13,10 @@ import { format } from "date-fns";
 interface TableReservationsProps {
     search?: string;
     showButton: boolean;
+    handleOpenModal?: (e: any) => void;
 }
 
-const TableReservations = ({ showButton, search }: TableReservationsProps) => {
+const TableReservations = ({ showButton, search, handleOpenModal }: TableReservationsProps) => {
     //
     const ITEMS_PER_PAGE = 10;
 
@@ -49,22 +50,20 @@ const TableReservations = ({ showButton, search }: TableReservationsProps) => {
                 <table className="shrink-0 table-fixed w-full text-center text-sm md:text-base ">
                     <thead>
                         <tr>
-                            <th className="w-12 lg:w-20 border-y-2 border-blue-300 text-blue-500 py-2">ID</th>
-                            <th className="w-44  border-y-2 border-blue-300 text-blue-500 py-2">Full Name</th>
-                            <th className="w-44  border-y-2 border-blue-300 text-blue-500 py-2">Email</th>
-                            <th className="w-36  border-y-2 border-blue-300 text-blue-500 py-2">Contact</th>
-                            <th className="w-28  border-y-2 border-blue-300 text-blue-500 py-2">Date</th>
-                            <th className="w-24 border-y-2 border-blue-300 text-blue-500 py-2">Time</th>
-                            <th className="w-28 border-y-2 border-blue-300 text-blue-500 py-2">Status</th>
-                            {showButton && <th className="w-28 border-y-2 border-blue-500 bg-blue-500"></th>}
+                            <th className="w-44 border-y-2 border-blue-300 text-blue-500 py-4">Full Name</th>
+                            <th className="w-44 border-y-2 border-blue-300 text-blue-500 py-2">Email</th>
+                            <th className="w-36 border-y-2 border-blue-300 text-blue-500 py-2">Contact</th>
+                            <th className="w-24 border-y-2 border-blue-300 text-blue-500 py-2">Date</th>
+                            <th className="w-20 border-y-2 border-blue-300 text-blue-500 py-2">Time</th>
+                            <th className="w-24 border-y-2 border-blue-300 text-blue-500 py-2">Status</th>
+                            {showButton && <th className="w-32 border-y-2 border-blue-500 bg-blue-500"></th>}
                         </tr>
                     </thead>
                     <tbody>
                         {result &&
                             result.map((reservation: any, index: any) => (
                                 <tr key={index}>
-                                    <td className="py-1 border-b border-gray-500">{reservation.id}</td>
-                                    <td className="border-b border-gray-500">
+                                    <td className="py-1 lg:py-1.5 border-b border-gray-500">
                                         {reservation.first_name + " " + reservation.last_name}
                                     </td>
                                     <td className="border-b border-gray-500">{reservation.email}</td>
@@ -76,14 +75,50 @@ const TableReservations = ({ showButton, search }: TableReservationsProps) => {
                                         {format(new Date(`2000-01-01 ${reservation.time}`), "hh:mm a")}
                                     </td>
                                     <td className="border-b border-gray-500">
-                                        <span className="bg-red-300 rounded-full px-2">{reservation.status}</span>
+                                        {(reservation.status === "APPROVED" && (
+                                            <span className="bg-green-500 rounded-full px-4 py-1 text-sm">
+                                                {reservation.status}
+                                            </span>
+                                        )) ||
+                                            (reservation.status === "PENDING" && (
+                                                <span className="bg-yellow-400 rounded-full px-4 py-1 text-sm">
+                                                    {reservation.status}
+                                                </span>
+                                            )) ||
+                                            (reservation.status === "CANCELLED" && (
+                                                <span className="bg-red-500 rounded-full px-4 py-1 text-sm">
+                                                    {reservation.status}
+                                                </span>
+                                            )) ||
+                                            (reservation.status === "COMPLETED" && (
+                                                <span className="bg-blue-500 rounded-full px-4 py-1 text-sm">
+                                                    {reservation.status}
+                                                </span>
+                                            ))}
                                     </td>
                                     {showButton && (
-                                        <td className="border-b border-gray-500">
-                                            <button className="px-2 py-1 border-blue-500 border text-blue-500 rounded transition duration-300 hover:bg-blue-700 hover:text-white focus:outline-none">
-                                                Details
-                                            </button>
-                                        </td>
+                                        <div className="flex justify-center space-x-1">
+                                            <td className="border-b border-gray-500">
+                                                <button
+                                                    className="rounded-sm border border-green-700 bg-green-500 px-2 py-1 text-white transition duration-200 hover:bg-green-700 focus:outline-none"
+                                                    onClick={() => {
+                                                        handleOpenModal && handleOpenModal(reservation);
+                                                    }}
+                                                >
+                                                    Confirm
+                                                </button>
+                                            </td>
+                                            <td className="border-b border-gray-500">
+                                                <button
+                                                    className="rounded-sm border border-blue-700 bg-blue-500 px-2 py-1 text-white transition duration-200 hover:bg-blue-700 focus:outline-none"
+                                                    onClick={() => {
+                                                        handleOpenModal && handleOpenModal(reservation);
+                                                    }}
+                                                >
+                                                    Edit
+                                                </button>
+                                            </td>
+                                        </div>
                                     )}
                                 </tr>
                             ))}

@@ -14,7 +14,7 @@ const DashboardSidenav = () => {
     const { cookies } = useAuth();
     return (
         <>
-            <Card className="card py-4 px-2 w-[250px] border border-gray-200 drop-shadow-md">
+            <Card className="py-4 px-2 w-[250px] border border-gray-200 drop-shadow-md">
                 <nav className="h-full">
                     <div className="h-full flex flex-col gap-3 font-semi lg:text-xl">
                         <li className="flex ">
@@ -67,6 +67,7 @@ const DashboardSidenav = () => {
                     </div>
                 </nav>
             </Card>
+            <section></section>
         </>
     );
 };

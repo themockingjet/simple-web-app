@@ -49,7 +49,7 @@ const DashboardHeader = () => {
 
     return (
         <>
-            <header className="container mx-auto h-12 lg:h-16 border-b-2 border-blue-500 drop-shadow-md relative">
+            <header className="h-12 lg:h-16 border-b-2 border-blue-500 drop-shadow-md relative">
                 {/* For LG screen */}
                 <div className="flex flex-row h-full w-full justify-between items-center px-4 hidden lg:inline-flex">
                     <div className="flex h-full items-center px-2 text-blue-500">
@@ -110,23 +110,23 @@ const DashboardHeader = () => {
             )}
 
             {/* Settings/Logout DropDown */}
-            <div className="container mx-auto relative">
-                <div
-                    className={`z-50 container absolute top-0 right-0 flex flex-col w-auto gap-1 bg-white px-5 py-2 drop-shadow-md block ${
-                        settingsShow ? "" : "hidden"
-                    }`}
-                >
-                    <Link
-                        to="/"
-                        className="w-full text-start font-bold text-base hover:text-blue-300"
-                        onClick={handleDropDownLink}
+            {settingsShow && (
+                <div className="container mx-auto relative">
+                    <div
+                        className={`z-50 container absolute top-0 right-0 flex flex-col w-auto gap-1 bg-white px-5 py-2 drop-shadow-md block`}
                     >
-                        Settings
-                    </Link>
-                    {/* form logout */}
-                    <FormLogout onSubmit={handleLogout} />
+                        <Link
+                            to="/"
+                            className="w-full text-start font-bold text-base hover:text-blue-300"
+                            onClick={handleDropDownLink}
+                        >
+                            Settings
+                        </Link>
+                        {/* form logout */}
+                        <FormLogout onSubmit={handleLogout} />
+                    </div>
                 </div>
-            </div>
+            )}
         </>
     );
 };

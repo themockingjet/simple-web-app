@@ -3,12 +3,13 @@
 //
 
 import Card from "../../components/Card";
-
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Input from "../../components/Input";
 import TableUsers from "../../components/withUseQuery/TableUsers";
+import ModalReservationDetails from "../../components/Modals/ModalReservationDetails";
 
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 const queryClient = new QueryClient();
+
 const AdminUsers = () => {
     //
 
@@ -28,6 +29,7 @@ const AdminUsers = () => {
                     </QueryClientProvider>
                 </Card>
             </div>
+            <ModalReservationDetails />
         </>
     );
 };
