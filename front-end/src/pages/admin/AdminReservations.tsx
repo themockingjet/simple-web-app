@@ -46,8 +46,8 @@ const AdminReservations = () => {
 
     return (
         <>
-            <div id="my-component" className="grid auto-rows-min grid-cols-4 grid-flow-row gap-4">
-                <Card className="p-0 h-12 col-span-4 grid flex items-center justify-center md:justify-start px-4 space-x-2">
+            <div id="my-component" className="grid auto-rows-min grid-cols-4 grid-flow-row gap-4 ">
+                <Card className="p-0 h-12 col-span-4 grid flex items-center justify-center md:justify-start px-4 space-x-2 border border-slate-200">
                     <label htmlFor="search">Search:</label>
                     <Input id="search" name="search" onChange={(e) => setSearch(e.target.value)} />
                     {errorMessage.status && errorMessage.status === "success" && (

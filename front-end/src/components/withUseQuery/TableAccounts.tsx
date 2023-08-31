@@ -5,21 +5,23 @@
 import Loading from "../Loading";
 import ErrorLoad from "../ErrorLoad";
 
-import { usePagination } from "@mantine/hooks";
-import { Pagination } from "@mantine/core";
-import { useQueryAccounts } from "../../hooks/useQuery/useQueryAccounts";
-import { format } from "date-fns";
+import {usePagination} from "@mantine/hooks";
+import {Pagination} from "@mantine/core";
+import {useQueryAccounts} from "../../hooks/useQuery/useQueryAccounts";
+import {format} from "date-fns";
 
 interface TableAccountsProps {
-    showButton: boolean;
+    search?: string;
+    isEditable: boolean;
+    handleOpenModal?: (data: any) => void;
 }
 
-const TableAccounts = ({ showButton }: TableAccountsProps) => {
+const TableAccounts = ({isEditable, search, handleOpenModal}: TableAccountsProps) => {
     //
     const ITEMS_PER_PAGE = 10;
 
-    const { queryTableAccounts } = useQueryAccounts();
-    const { isError, isLoading, data, result, setResult } = queryTableAccounts(ITEMS_PER_PAGE);
+    const {queryTableAccounts} = useQueryAccounts();
+    const {isError, isLoading, data, result, setResult} = queryTableAccounts(ITEMS_PER_PAGE, search);
 
     const pagination = usePagination({
         total: Math.ceil(data?.length / ITEMS_PER_PAGE),
@@ -52,7 +54,7 @@ const TableAccounts = ({ showButton }: TableAccountsProps) => {
                             <th className="w-32 border-y-2 border-blue-300 text-blue-500 py-2">Email</th>
                             <th className="w-24 border-y-2 border-blue-300 text-blue-500 py-2">Role</th>
                             <th className="w-44 border-y-2 border-blue-300 text-blue-500 py-2">Date Created</th>
-                            {showButton && <th className="w-28 border-y-2 border-blue-500 bg-blue-500"></th>}
+                            {isEditable && <th className="w-28 border-y-2 border-blue-500 bg-blue-500"></th>}
                         </tr>
                     </thead>
                     <tbody>
@@ -60,11 +62,11 @@ const TableAccounts = ({ showButton }: TableAccountsProps) => {
                             <tr key={index}>
                                 <td className="py-1 border-b border-gray-500">{account.id}</td>
                                 <td className="border-b border-gray-500">{account.email}</td>
-                                <td className="border-b border-gray-500">{account.role === 1 ? "Admin" : "User"}</td>
+                                <td className="border-b border-gray-500">{account.is_admin === 1 ? "Admin" : "User"}</td>
                                 <td className="border-b border-gray-500">
                                     {format(new Date(account.created_at), "dd/MM/yyyy h:mm a")}
                                 </td>
-                                {showButton && (
+                                {isEditable && (
                                     <td className="border-b border-gray-500">
                                         <button className="px-2 py-1 border-blue-500 border text-blue-500 rounded transition duration-300 hover:bg-blue-700 hover:text-white focus:outline-none">
                                             View Details

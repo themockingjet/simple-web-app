@@ -36,7 +36,7 @@ const AdminUsers = () => {
     return (
         <>
             <div className="grid auto-cols-4 grid-flow-row-dense auto-rows-min gap-4">
-                <Card className="h-12 col-span-4 grid grid-cols-4 gap-2">
+                <Card className="h-12 col-span-4 grid grid-cols-4 gap-2 border border-slate-200">
                     <div className="flex items-center px-4 space-x-2">
                         <label htmlFor="search">Search:</label>
                         <Input id="search" name="search" onChange={(e) => setSearch(e.target.value)} />

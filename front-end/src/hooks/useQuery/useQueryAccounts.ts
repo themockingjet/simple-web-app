@@ -2,18 +2,18 @@
 //
 //
 
-import { useQuery } from "@tanstack/react-query";
-import { fetchAccounts } from "../../fetchers/fetchAccounts";
-import { useState } from "react";
+import {useQuery} from "@tanstack/react-query";
+import {fetchAccounts} from "../../fetchers/fetchAccounts";
+import {useState} from "react";
 
 export function useQueryAccounts() {
     //
-    const { findTableAccounts } = fetchAccounts();
+    const {findTableAccounts} = fetchAccounts();
 
-    const queryTableAccounts = (ITEMS_PER_PAGE: number) => {
+    const queryTableAccounts = (ITEMS_PER_PAGE: number, search: string | undefined) => {
         //
         const [result, setResult] = useState([]);
-        const { isError, isLoading, data } = useQuery(["accounts"], findTableAccounts, {
+        const {isError, isLoading, data} = useQuery(["accounts_dt", search], () => findTableAccounts(search), {
             cacheTime: 600000,
             retry: 3,
             onSuccess: (data: any) => {
@@ -21,8 +21,8 @@ export function useQueryAccounts() {
             },
         });
 
-        return { isError, isLoading, data, result, setResult };
+        return {isError, isLoading, data, result, setResult};
     };
 
-    return { queryTableAccounts };
+    return {queryTableAccounts};
 }
