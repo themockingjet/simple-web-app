@@ -47,14 +47,21 @@ exports.findTableUsers = async (data, callback) => {
     );
 };
 
-exports.findTableAccounts = async (callback) => {
+exports.findTableAccounts = async (data, callback) => {
     //
-    await db.query(`SELECT id, email, is_admin, created_at FROM accounts;`, (error, result) => {
-        //
-        if (error) {
-            callback(error, null);
-        } else {
-            callback(null, result);
+    await db.query(
+        `SELECT id, email, is_admin, created_at 
+        FROM accounts
+        WHERE email LIKE ? OR is_admin LIKE ? OR created_at LIKE ?;`,
+        [data, data, data],
+        (error, result) => {
+            //
+            console.log(error);
+            if (error) {
+                callback(error, null);
+            } else {
+                callback(null, result);
+            }
         }
-    });
+    );
 };

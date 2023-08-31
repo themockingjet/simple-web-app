@@ -28,7 +28,8 @@ exports.findTableUsers = async (req, res) => {
 
 exports.findTableAccounts = async (req, res) => {
     //
-    await Table.findTableAccounts((err, result) => {
+    const search = `%${req.query.search}%`;
+    await Table.findTableAccounts(search, (err, result) => {
         //
         if (err) return res.sendStatus(500);
 
