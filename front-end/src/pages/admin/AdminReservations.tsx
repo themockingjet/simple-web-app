@@ -58,9 +58,7 @@ const AdminReservations = () => {
                 </Card>
 
                 <Card className="p-0 col-span-4 min-h-[29rem] max-h-[29rem] md:min-h-[32rem] md:max-h-[32rem] flex flex-col overflow-x-auto overflow-y-hidden pb-2">
-                    <QueryClientProvider client={queryClient}>
-                        <TableReservations isEditable={true} search={search} handleOpenModal={handleOpenModal} />
-                    </QueryClientProvider>
+                    <TableReservations isEditable={true} search={search} handleOpenModal={handleOpenModal} />
                 </Card>
 
                 {showModal && (

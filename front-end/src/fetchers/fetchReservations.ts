@@ -36,5 +36,17 @@ export function fetchReservations() {
         return response;
     };
 
-    return {findTableReservations, findAllReservations, findReservationByDate, findReservationsByRange};
+    const findReservationByStatus = async (status: string) => {
+        //
+        const response = await axiosPrivate.get("/api/reservation/status/" + status).then((res) => res.data);
+        return response;
+    };
+
+    return {
+        findTableReservations,
+        findAllReservations,
+        findReservationByDate,
+        findReservationsByRange,
+        findReservationByStatus,
+    };
 }

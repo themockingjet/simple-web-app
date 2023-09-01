@@ -8,7 +8,13 @@ import {useState} from "react";
 
 export function useQueryReservations() {
     //
-    const {findTableReservations, findAllReservations, findReservationByDate, findReservationsByRange} = fetchReservations();
+    const {
+        findTableReservations,
+        findAllReservations,
+        findReservationByDate,
+        findReservationsByRange,
+        findReservationByStatus,
+    } = fetchReservations();
 
     const queryTableReservations = (ITEMS_PER_PAGE: number, search: string | undefined) => {
         //
@@ -68,12 +74,26 @@ export function useQueryReservations() {
             }
         );
 
-        return {
-            isLoading,
-            isError,
-            data,
-        };
+        return {isLoading, isError, data};
     };
 
-    return {queryTableReservations, queryReservations, queryReservationByDate, queryReservationsByRange};
+    const queryReservationsByStatus = (status: string) => {
+        //
+        const {isError, isLoading, data} = useQuery(["reservations_status", status], () => findReservationByStatus(status), {
+            cacheTime: 300000,
+            staleTime: 2000,
+            retry: 3,
+            enabled: !!status,
+        });
+
+        return {isError, isLoading, data};
+    };
+
+    return {
+        queryTableReservations,
+        queryReservations,
+        queryReservationByDate,
+        queryReservationsByRange,
+        queryReservationsByStatus,
+    };
 }
