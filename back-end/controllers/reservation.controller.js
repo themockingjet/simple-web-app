@@ -89,6 +89,16 @@ exports.findReservationByRange = async (req, res) => {
     }
 };
 
+exports.findReservationByStatus = async (req, res) => {
+    //
+    await Reservation.findReservationByStatus(req.params.status, (err, result) => {
+        //
+        if (err) return res.sendStatus(500);
+
+        res.status(200).send(result);
+    });
+};
+
 exports.updateReservation = async (req, res) => {
     //
     const id = req.params.id;

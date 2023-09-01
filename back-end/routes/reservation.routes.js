@@ -16,6 +16,7 @@ route.get("/date/:date", ReservationController.findReservationByDate);
 
 route.get("/range/:start/:end", ReservationController.findReservationByRange);
 
+route.get("/status/:status", ReservationController.findReservationByStatus);
 route.post("/status/:id", ReservationController.updateReservationStatus);
 
 module.exports = route;

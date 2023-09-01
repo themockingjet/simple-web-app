@@ -57,6 +57,7 @@ exports.findReservationByDate = async (date, callback) => {
 };
 
 exports.findReservationByRange = async (start, end, callback) => {
+    //
     await db.query(
         "SELECT * FROM reservations WHERE date BETWEEN ? AND ? AND ( status = 'PENDING' OR status = 'CONFIRMED' );",
         [start, end],
@@ -69,6 +70,19 @@ exports.findReservationByRange = async (start, end, callback) => {
             }
         }
     );
+};
+
+exports.findReservationByStatus = async (status, callback) => {
+    //
+    await db.query("SELECT COUNT(id) as count FROM reservations WHERE status = ?", [status], (error, result) => {
+        //
+        console.log(error);
+        if (error) {
+            callback(error, null);
+        } else {
+            callback(null, result);
+        }
+    });
 };
 
 exports.updateReservation = async (id, data, callback) => {
