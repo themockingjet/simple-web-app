@@ -4,6 +4,20 @@
 
 const db = require("../config/db_config");
 
+exports.createUser = async (data, callback) => {
+    await db.query(
+        `INSERT INTO accounts SET email = ?, password = ?, created_at = NOW(), updated_at = NOW(); INSERT INTO users SET first_name = ?, last_name = ?, account_id = (SELECT id FROM accounts WHERE email=?), contact_no = ?, created_at = NOW(), updated_at = NOW();`,
+        [data.email, data.password, data.first_name, data.last_name, data.email, data.contact_no],
+        (error, result) => {
+            if (error) {
+                callback(error, null);
+            } else {
+                callback(null, result);
+            }
+        }
+    );
+};
+
 exports.findUsers = async (callback) => {
     await db.query("SELECT * FROM users", (error, result) => {
         if (error) {
@@ -34,22 +48,10 @@ exports.findUserByEmail = async (email, callback) => {
     });
 };
 
-exports.createUser = async (data, callback) => {
-    await db.query(
-        `INSERT INTO accounts SET email = ?, password = ?, created_at = NOW(), updated_at = NOW(); INSERT INTO users SET first_name = ?, last_name = ?, account_id = (SELECT id FROM accounts WHERE email=?), created_at = NOW(), updated_at = NOW();`,
-        [data.email, data.password, data.first_name, data.last_name, data.email],
-        (error, result) => {
-            if (error) {
-                callback(error, null);
-            } else {
-                callback(null, result);
-            }
-        }
-    );
-};
-
 exports.updateUser = async (id, data, callback) => {
-    await db.query("UPDATE users SET ? WHERE id = ?", [data, id], (error, result) => {
+    //
+    await db.query("UPDATE users SET ?, updated_at = NOW() WHERE id = ?", [data, id], (error, result) => {
+        //
         if (error) {
             callback(error, null);
         } else {

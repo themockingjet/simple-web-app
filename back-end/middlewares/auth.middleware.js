@@ -10,14 +10,13 @@ const authenticateToken = (req, res, next) => {
     const authHeader = req.headers["authorization"];
     if (!authHeader) return res.sendStatus(401);
     //
-
     const token = authHeader && authHeader.split(" ")[1];
     if (token) {
         //
         jwt.verify(token, process.env.TOKEN_SECRET, (err, decoded) => {
-            if (err) res.redirect("/login");
+            if (err) return res.sendStatus(403);
 
-            req.user = decoded.email;
+            req.email = decoded.email;
             next();
         });
     } else {
