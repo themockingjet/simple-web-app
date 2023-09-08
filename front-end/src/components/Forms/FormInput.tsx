@@ -30,15 +30,22 @@ interface FormInputProps {
     onChange?: (e: any) => void;
 }
 
-const FormInput = ({ id, name, label, validation, ...props }: FormInputProps) => {
+const FormInput = ({
+    id,
+    name,
+    label,
+    validation,
+    ...props
+}: FormInputProps) => {
     const {
         register,
         formState: { errors },
         watch,
     } = useFormContext();
-
     return (
-        <div className={cn("flex flex-col px-3 w-full h-24", props.divClassName)}>
+        <div
+            className={cn("flex h-24 w-full flex-col px-2", props.divClassName)}
+        >
             <label htmlFor={id} className={cn("w-full", props.labelClassName)}>
                 {label}
             </label>
@@ -47,20 +54,22 @@ const FormInput = ({ id, name, label, validation, ...props }: FormInputProps) =>
                     <Input
                         id={id}
                         className={cn(
-                            "w-full px-3 shadow-sm border outline-none h-8 md:h-10 2xl:h-14 border border-red-100",
-                            props.inputClassName
+                            "h-8 w-full border border-blue-300 px-2 shadow-sm outline-none md:h-10 2xl:h-14",
+                            props.inputClassName,
                         )}
                         type={props.type}
                         {...register(name, {
                             required: { value: true, message: "Required" },
-                            validate: (value) => value === watch("password") || "Passwords do not match",
+                            validate: (value) =>
+                                value === watch("password") ||
+                                "Passwords do not match",
                         })}
                     />
                     {errors[name] && (
                         <p
                             className={cn(
-                                "text-sm text-red-500 bg-red-100 rounded-md tracking-tighter text-center mt-1",
-                                props.errorClassName
+                                "mt-1 rounded-md bg-red-300 bg-opacity-75 text-center text-sm tracking-tighter text-red-800",
+                                props.errorClassName,
                             )}
                         >
                             <>{errors[name]?.message}</>
@@ -72,8 +81,8 @@ const FormInput = ({ id, name, label, validation, ...props }: FormInputProps) =>
                     <Input
                         id={id}
                         className={cn(
-                            "w-full px-3 shadow-sm border outline-none h-8 md:h-10 2xl:h-14 border border-red-100",
-                            props.inputClassName
+                            "h-8 w-full border border-red-100 px-2 shadow-sm outline-none md:h-10 2xl:h-14",
+                            props.inputClassName,
                         )}
                         type={props.type}
                         {...register(name, validation)}
@@ -81,8 +90,8 @@ const FormInput = ({ id, name, label, validation, ...props }: FormInputProps) =>
                     {errors[name] && (
                         <p
                             className={cn(
-                                "text-sm text-red-500 bg-red-100 rounded-md tracking-tighter text-center mt-1",
-                                props.errorClassName
+                                "mt-1 rounded-md bg-red-300 bg-opacity-75 text-center text-sm tracking-tighter text-red-800",
+                                props.errorClassName,
                             )}
                         >
                             <>{errors[name]?.message}</>

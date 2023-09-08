@@ -6,6 +6,7 @@ import DatePicker from "react-datepicker";
 import { cn } from "../../utils/utils";
 import { Controller, useFormContext } from "react-hook-form";
 import { useOccupiedDates } from "../../hooks/useOccupiedDates";
+import { useState } from "react";
 
 interface FormInputDateProps {
     //
@@ -20,13 +21,14 @@ interface FormInputDateProps {
         validate?: (value: any) => boolean | string;
     };
     date?: Date | undefined;
+    selectedDate?: Date | undefined;
     divClassName?: string;
     labelClassName?: string;
     inputClassName?: string;
     onDateChange?: (e: Date) => void;
 }
 
-const FormInputDate = ({ id, name, label, validation, date, ...props }: FormInputDateProps) => {
+const FormInputDate = ({ id, name, label, validation, date, selectedDate, ...props }: FormInputDateProps) => {
     //
     const {
         control,
@@ -36,21 +38,19 @@ const FormInputDate = ({ id, name, label, validation, date, ...props }: FormInpu
     const { isLoading, isError, dateFilter } = useOccupiedDates();
 
     return (
-        <div className={cn("flex flex-col w-full w-full px-3 h-24", props.divClassName)}>
+        <div className={cn("flex flex-col w-full ", props.divClassName)}>
             <label htmlFor={id} className={cn("w-full text-base", props.labelClassName)}>
                 {label}
             </label>
             <Controller
                 name={name}
                 control={control}
+                defaultValue={selectedDate}
                 rules={validation}
                 render={({ field }) => (
                     <DatePicker
                         id={id}
-                        className={cn(
-                            "w-full px-3 py-2 shadow-sm border focus:outline-none h-8 md:h-10 2xl:h-14 disabled:bg-gray-200",
-                            props.inputClassName
-                        )}
+                        className={cn("border border-gray-300 rounded-md p-1 focus:outline-none", props.inputClassName)}
                         onChange={(e: Date) => {
                             field.onChange(e);
                             props.onDateChange && props.onDateChange(e);

@@ -5,7 +5,7 @@
 import { addDays } from "date-fns";
 import { useState, useEffect } from "react";
 import { setHours, setMinutes, addHours } from "date-fns";
-import { useQueryReservations } from "./useQueryReservations";
+import { useQueryReservations } from "./useQuery/useQueryReservations";
 
 export function useOccupiedDates() {
     //

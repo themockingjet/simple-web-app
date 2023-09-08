@@ -1,13 +1,13 @@
 //
 //
 //
-"client";
 
 import FormSchedule from "../../components/Forms/FormSchedule";
-import { FormProvider, useForm } from "react-hook-form";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import { FormProvider, useForm } from "react-hook-form";
 import { useAuth } from "../../hooks/useAuth";
 import { useState } from "react";
+import Card from "../../components/Card";
 
 const UserSchedule = () => {
     //
@@ -20,59 +20,53 @@ const UserSchedule = () => {
         mode: "onChange",
     });
 
-    const onSubmit = methods.handleSubmit(async (data) => {
+    const onSubmit = methods.handleSubmit(async (data: any) => {
         //
         data.id = cookies.id;
-        console.log(data);
 
-        // try {
-        //     const response = await axiosPrivate.post("/api/reservation", data);
-        //     if (response) {
-        //         methods.reset();
-        //         setErrorMessage({
-        //             status: "success",
-        //             message: "Success! You may now view your reservation schedule in your dashboard.",
-        //         });
-        //     }
-        // } catch (error: any) {
-        //     if (!error.response) {
-        //         setErrorMessage({ status: "error", message: "No Server Response." });
-        //     } else {
-        //         setErrorMessage({ status: "error", message: "Internal Server Error." });
-        //     }
-        // }
+        try {
+            const response = await axiosPrivate.post("/api/reservation", data);
+            if (response) {
+                methods.reset();
+                setErrorMessage({
+                    status: "success",
+                    message: "Success! You may now view your reservation schedule in your dashboard.",
+                });
+            }
+        } catch (error: any) {
+            if (!error.response) {
+                setErrorMessage({ status: "error", message: "No Server Response." });
+            } else {
+                setErrorMessage({ status: "error", message: "Internal Server Error." });
+            }
+        }
 
-        // setTimeout(() => {
-        //     setErrorMessage({ status: "", message: "" });
-        // }, 3000);
+        setTimeout(() => {
+            setErrorMessage({ status: "", message: "" });
+        }, 3000);
     });
 
     return (
         <>
-            <div className="flex flex-col w-full h-full space-y-2">
-                <div className="z-10 card w-full h-full border border-gray-200 drop-shadow-sm">
-                    <div className="grid grid-flow-row gap-4">
-                        <div className="container mx-auto">
-                            <FormProvider {...methods}>
-                                <FormSchedule onSubmit={onSubmit} />
-                            </FormProvider>
-                        </div>
-                    </div>
+            <div className="grid w-full auto-rows-min grid-cols-4 gap-4">
+                <div className="col-span-4 h-full w-full lg:col-span-2">
+                    <Card className="h-68 w-full border border-slate-200">
+                        <FormProvider {...methods}>
+                            <FormSchedule onSubmit={onSubmit} />
+                        </FormProvider>
+                        {errorMessage.message && (
+                            <div
+                                className={`container mx-auto flex justify-center rounded-md border bg-opacity-75 py-2 ${
+                                    errorMessage.status === "success"
+                                        ? "border-green-500 bg-green-300 text-green-800"
+                                        : "border-red-500 bg-red-300 text-red-800"
+                                }`}
+                            >
+                                <span className="px-4 text-center font-semibold">{errorMessage.message}</span>
+                            </div>
+                        )}
+                    </Card>
                 </div>
-
-                {errorMessage.message && (
-                    <div className="z-0 card h-full border border-gray-200 drop-shadow-sm w-1/2 flex self-center">
-                        <div
-                            className={`container mx-auto flex justify-center border py-2 rounded-md ${
-                                errorMessage.status === "success"
-                                    ? "border-green-300 bg-green-100"
-                                    : "border-red-300 bg-red-100"
-                            }`}
-                        >
-                            <span className="font-semibold text-center px-4">{errorMessage.message}</span>
-                        </div>
-                    </div>
-                )}
             </div>
         </>
     );

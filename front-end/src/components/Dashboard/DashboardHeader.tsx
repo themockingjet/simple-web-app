@@ -49,17 +49,20 @@ const DashboardHeader = () => {
 
     return (
         <>
-            <header className="container mx-auto h-12 lg:h-16 border-b-2 border-blue-500 drop-shadow-md relative">
+            <header className="relative h-12 border-b-2 border-blue-500 drop-shadow-md lg:h-16">
                 {/* For LG screen */}
-                <div className="flex flex-row h-full w-full justify-between items-center px-4 hidden lg:inline-flex">
+                <div className="hidden h-full w-full flex-row items-center justify-between px-4 lg:inline-flex">
                     <div className="flex h-full items-center px-2 text-blue-500">
-                        <Link to="/admin/dashboard" className="left-0 px-2 text-3xl font-bold hover:text-blue-700">
+                        <Link
+                            to={cookies.role === 1 ? "/admin/dashboard" : "/user/dashboard"}
+                            className="left-0 px-2 text-3xl font-bold hover:text-blue-700"
+                        >
                             <span className="drop-shadow-md">#WebApp</span>
                         </Link>
                     </div>
-                    <div className="group flex relative items-center space-x-4">
+                    <div className="group relative flex items-center space-x-4">
                         {/* Details */}
-                        <div className="bg-gray-100 rounded-md px-3 drop-shadow-md">
+                        <div className="rounded-md bg-gray-100 px-3 drop-shadow-md">
                             <p className="text-center font-medium group-hover:text-slate-900">{cookies.email}</p>
                             <p className="text-center text-sm font-medium text-slate-500 group-hover:text-slate-700">
                                 {cookies.role === 1 ? "Admin" : "User"}
@@ -72,11 +75,11 @@ const DashboardHeader = () => {
                     </div>
                 </div>
                 {/* For SM screen */}
-                <div className="flex w-full h-full justify-center items-stretch block lg:hidden relative">
-                    <button onClick={handleMiniDropDownLink} className="w-full text-blue-500 font-bold text-xl">
+                <div className="relative inline-flex h-full w-full items-stretch justify-center lg:hidden">
+                    <button onClick={handleMiniDropDownLink} className="w-full text-xl font-bold text-blue-500">
                         {curDirectory.title}
                     </button>
-                    <button onClick={handleDropDownLink} className="absolute right-2 inset-y-0">
+                    <button onClick={handleDropDownLink} className="absolute inset-y-0 right-2">
                         <img
                             className=""
                             width="32"
@@ -90,7 +93,7 @@ const DashboardHeader = () => {
             {/* SM Screen Nav Links */}
             {!isLargeDevice && (
                 <div
-                    className={`z-50 absolute top-[3rem] flex flex-col w-full py-1 bg-white font-bold text-xl drop-shadow-md ${
+                    className={`absolute top-[3rem] z-50 flex w-full flex-col bg-white py-1 text-xl font-bold drop-shadow-md ${
                         show ? "" : "hidden"
                     }`}
                 >
@@ -110,23 +113,23 @@ const DashboardHeader = () => {
             )}
 
             {/* Settings/Logout DropDown */}
-            <div className="container mx-auto relative">
-                <div
-                    className={`z-50 container absolute top-0 right-0 flex flex-col w-auto gap-1 bg-white px-5 py-2 drop-shadow-md block ${
-                        settingsShow ? "" : "hidden"
-                    }`}
-                >
-                    <Link
-                        to="/"
-                        className="w-full text-start font-bold text-base hover:text-blue-300"
-                        onClick={handleDropDownLink}
+            {settingsShow && (
+                <div className="container relative mx-auto">
+                    <div
+                        className={`container absolute right-0 top-0 z-50 block flex w-auto flex-col gap-1 bg-white px-5 py-2 drop-shadow-md`}
                     >
-                        Settings
-                    </Link>
-                    {/* form logout */}
-                    <FormLogout onSubmit={handleLogout} />
+                        <Link
+                            to="/"
+                            className="w-full text-start text-base font-bold hover:text-blue-300"
+                            onClick={handleDropDownLink}
+                        >
+                            Settings
+                        </Link>
+                        {/* form logout */}
+                        <FormLogout onSubmit={handleLogout} />
+                    </div>
                 </div>
-            </div>
+            )}
         </>
     );
 };

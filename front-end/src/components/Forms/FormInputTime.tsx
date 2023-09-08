@@ -2,9 +2,10 @@
 //
 //
 import DatePicker from "react-datepicker";
-import { cn } from "../../utils/utils";
-import { Controller, useFormContext } from "react-hook-form";
-import { useOccupiedTimes } from "../../hooks/useOccupiedTimes";
+import {cn} from "../../utils/utils";
+import {Controller, useFormContext} from "react-hook-form";
+import {useOccupiedTimes} from "../../hooks/useOccupiedTimes";
+import {useEffect, useState} from "react";
 
 interface FormInputTimeProps {
     //
@@ -19,46 +20,47 @@ interface FormInputTimeProps {
         validate?: (value: any) => boolean | string;
     };
     date: Date | null;
+    selectedTime?: Date | null;
     divClassName?: string;
     labelClassName?: string;
     inputClassName?: string;
     onDateChange?: (e: any) => void;
 }
 
-const FormInputTime = ({ id, name, label, validation, ...props }: FormInputTimeProps) => {
+const FormInputTime = ({id, name, label, validation, selectedTime, ...props}: FormInputTimeProps) => {
     //
     const {
         control,
-        formState: { errors },
+        formState: {errors},
     } = useFormContext();
 
     const date = props.date;
+    const {timeFilter, filterPassedTime} = useOccupiedTimes(date);
+    const [time, setTime] = useState<any>();
 
-    const { timeFilter, filterPassedTime } = useOccupiedTimes(date);
+    useEffect(() => {}, [date, timeFilter]);
 
     return (
-        <div className={cn("flex flex-col w-full w-full px-3 h-24", props.divClassName)}>
+        <div className={cn("flex flex-col w-full", props.divClassName)}>
             <label htmlFor={id} className={cn("w-full text-base", props.labelClassName)}>
                 {label}
             </label>
             <Controller
                 name={name}
                 control={control}
+                defaultValue={selectedTime}
                 rules={validation}
-                render={({ field }) => (
+                render={({field}) => (
                     <DatePicker
                         id={id}
-                        className={cn(
-                            "w-full px-3 py-2 shadow-sm border focus:outline-none h-8 md:h-10 2xl:h-14 disabled:bg-gray-200",
-                            props.inputClassName
-                        )}
+                        className={cn("border border-gray-300 rounded-md p-1 focus:outline-none", props.inputClassName)}
                         onChange={(e: Date) => {
                             field.onChange(e);
-                            props.onDateChange && props.onDateChange(e);
                         }}
                         selected={field.value}
                         disabled={!date}
                         disabledKeyboardNavigation
+                        isClearable
                         includeDates={[date ? date : new Date()]}
                         excludeTimes={timeFilter}
                         filterTime={filterPassedTime}

@@ -2,15 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer components {
-    .card {
-        background-color: theme("colors.white");
-        border-radius: theme("borderRadius.lg");
-        padding: theme("spacing.6");
-        box-shadow: theme("boxShadow.xl");
-    }
-}
-
 .active {
     @apply bg-blue-500 rounded-lg text-white;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }

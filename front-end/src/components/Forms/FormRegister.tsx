@@ -27,7 +27,7 @@ const FormRegister = ({ onSubmit }: FormRegisterProps) => {
                 e.preventDefault();
             }}
         >
-            <div className="flex flex-row">
+            <div className="flex flex-col md:flex-row">
                 <FormInput
                     inputClassName="border-blue-300 focus:border-blue-600 focus:border-4 focus:border-opacity-75 rounded-md"
                     {...firstNameValidation}
@@ -54,15 +54,15 @@ const FormRegister = ({ onSubmit }: FormRegisterProps) => {
                 {...confirmPasswordValidation}
             />
 
-            <div className="flex justify-center w-full px-3 mt-2 ">
-                <div className="flex-col justify-center text-center w-full">
+            <div className="mt-2 flex w-full justify-center px-3 ">
+                <div className="w-full flex-col justify-center text-center">
                     <button
-                        className="bg-blue-500 rounded-full text-white h-10 w-full lg:w-3/4 uppercase font-bold"
+                        className="h-10 w-full rounded-full bg-blue-500 font-bold uppercase text-white lg:w-3/4"
                         onClick={onSubmit}
                     >
                         Register
                     </button>
-                    <div className="w-full text-center mt-2">
+                    <div className="mt-2 w-full text-center">
                         <Link to="/login" className="underline">
                             Already have an account?
                         </Link>

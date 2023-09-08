@@ -13,10 +13,10 @@ const LayoutDashboard = () => {
     return (
         <>
             <DashboardHeader />
-            <div className="flex flex-row container mx-auto my-4 min-h-[calc(100vh-5rem)] lg:min-h-[calc(100vh-6rem)] space-x-2">
+            <main className="flex flex-row container mx-auto my-4 min-h-[calc(100vh-5rem)] lg:min-h-[calc(100vh-6rem)] space-x-2">
                 {isLargeDevice && <DashboardSidenav />}
                 <Outlet />
-            </div>
+            </main>
         </>
     );
 };

@@ -28,17 +28,14 @@ const FormReservation = ({ onSubmit, ...props }: FormLoginProps) => {
     return (
         <>
             <form
-                className={cn(
-                    "w-full md:w-3/4 lg:w-full justify-center 2xl:h-3/4 my-auto p-2 md:p-3 lg:px-6 2xl:px-24 ",
-                    props.formClassName
-                )}
+                className={cn("flex h-full w-full flex-col space-y-4 p-4", props.formClassName)}
                 noValidate
                 autoComplete="off"
                 onSubmit={(e: any) => {
                     e.preventDefault();
                 }}
             >
-                <div className="flex">
+                <div className="flex flex-col space-x-0 lg:flex-row lg:space-x-4">
                     <QueryClientProvider client={queryClient}>
                         <FormInputDate
                             inputClassName="border-blue-300 focus:border-blue-600 focus:border-4 focus:border-opacity-75 rounded-md"
@@ -49,16 +46,16 @@ const FormReservation = ({ onSubmit, ...props }: FormLoginProps) => {
                             }}
                         />
                         <FormInputTime
-                            inputClassName="border-blue-300 focus:border-blue-600 focus:border-4 focus:border-opacity-75 rounded-md"
+                            inputClassName="border-blue-300 focus:border-blue-600 focus:border-4 focus:border-opacity-75 rounded-md disabled:bg-slate-300"
                             date={date}
                             {...timeValidation}
                         />
                     </QueryClientProvider>
                 </div>
 
-                <div className="flex w-full px-3 ">
+                <div className="flex w-full justify-center">
                     <button
-                        className="bg-blue-500 rounded-full text-white h-10 w-full uppercase font-bold"
+                        className=" h-10 w-3/4 rounded-full bg-blue-500 font-bold uppercase text-white md:w-1/2"
                         onClick={onSubmit}
                     >
                         Book Reservation

@@ -22,9 +22,15 @@ export const menuItems = [
         key: 3,
     },
     {
+        title: "Accounts",
+        path: "accounts",
+        role: [1],
+        key: 4,
+    },
+    {
         title: "Book Now",
         path: "schedule",
         role: [0],
-        key: 4,
+        key: 5,
     },
 ];

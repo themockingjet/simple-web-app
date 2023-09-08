@@ -15,26 +15,23 @@ const Header = () => {
 
     return (
         <>
-            <header className="container mx-auto h-12 lg:h-14 border-b-2 border-blue-500 drop-shadow-md">
+            <header className="container mx-auto h-12 border-b-2 border-blue-500 drop-shadow-md lg:h-14">
                 {/* For LG screen */}
-                <div className="h-full w-full hidden lg:block">
-                    <div className="flex h-full w-full justify-between items-center px-2">
-                        <div className="text-xl lg:text-2xl text-blue-500">
+                <div className="hidden h-full w-full lg:block">
+                    <div className="flex h-full w-full items-center justify-between px-2">
+                        <div className="text-xl text-blue-500 lg:text-2xl">
                             <Link to="/" className="left-0 px-2 font-bold hover:text-blue-700">
                                 #WebApp
-                            </Link>
-                            <Link to="/" className="left-0 px-2 font-bold hover:text-blue-700">
-                                #About
                             </Link>
                         </div>
 
                         <div className="flex">
-                            <div className="text-xl lg:text-xl text-blue-500">
+                            <div className="text-xl text-blue-500 lg:text-xl">
                                 <Link to="login" className="left-0 px-2 font-bold hover:text-blue-700">
                                     Login
                                 </Link>
                             </div>
-                            <div className="text-xl lg:text-xl text-blue-500">
+                            <div className="text-xl text-blue-500 lg:text-xl">
                                 <Link to="register" className="left-0 px-2 font-bold hover:text-blue-700">
                                     Register
                                 </Link>
@@ -43,8 +40,8 @@ const Header = () => {
                     </div>
                 </div>
                 {/* For SM screen */}
-                <div className="flex h-full justify-center items-center visible lg:hidden relative">
-                    <div className="text-xl lg:text-2xl text-blue-500">
+                <div className="visible relative flex h-full items-center justify-center lg:hidden">
+                    <div className="text-xl text-blue-500 lg:text-2xl">
                         <Link
                             to="/"
                             className="left-0 px-2 font-bold hover:text-blue-700"
@@ -67,7 +64,7 @@ const Header = () => {
                         <button onClick={handleDropDownLink}>
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
-                                className="w-8 h-8 pt-1"
+                                className="h-8 w-8 pt-1"
                                 fill="none"
                                 viewBox="0 0 24 24"
                                 stroke="currentColor"
@@ -84,7 +81,7 @@ const Header = () => {
                 </div>
             </header>
             <div
-                className={`z-50 absolute top-[3rem] flex flex-col w-full py-1 bg-white font-bold text-xl drop-shadow-md ${
+                className={`absolute top-[3rem] z-50 flex w-full flex-col bg-white py-1 text-xl font-bold drop-shadow-md ${
                     show ? "" : "hidden"
                 }`}
             >

@@ -24,6 +24,7 @@ import AdminUsers from "./pages/admin/AdminUsers";
 // User
 import UserDashboard from "./pages/user/UserDashboard";
 import UserSchedule from "./pages/user/UserSchedule";
+import AdminAccounts from "./pages/admin/AdminAccounts";
 
 export default function App() {
     return (
@@ -44,6 +45,7 @@ export default function App() {
                         <Route path="dashboard" element={<AdminDashboard />} />
                         <Route path="reservations" element={<AdminReservations />} />
                         <Route path="users" element={<AdminUsers />} />
+                        <Route path="accounts" element={<AdminAccounts />} />
                     </Route>
                     <Route path="/admin" element={<Navigate to="dashboard" replace />} />
                 </Route>

@@ -3,12 +3,17 @@
 //
 
 import { createContext, useMemo } from "react";
-import { Cookies, useCookies } from "react-cookie";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
 
 interface AuthContextInterface {
     //
-    login: (data: { id: number; email: string; role: number; token: string }) => void;
+    login: (data: {
+        id: number;
+        email: string;
+        role: number;
+        token: string;
+    }) => void;
     logout: () => void;
     cookies: any;
     clearCookies: () => void;
@@ -27,14 +32,21 @@ export const AuthProvider = ({ children }: any) => {
     const navigate = useNavigate();
     const [cookies, setCookies, removeCookie] = useCookies();
 
-    const login = async (data: { id: number; email: string; role: number; token: string }) => {
+    const login = async (data: {
+        id: number;
+        email: string;
+        role: number;
+        token: string;
+    }) => {
         //
         setCookies("id", data.id, { path: "/" });
         setCookies("email", data.email, { path: "/" });
         setCookies("role", data.role, { path: "/" });
         setCookies("token", data.token, { path: "/" });
 
-        data.role === 1 ? navigate("/admin/dashboard", { replace: true }) : navigate("/user/dashboard", { replace: true });
+        data.role === 1
+            ? navigate("/admin/dashboard", { replace: true })
+            : navigate("/user/dashboard", { replace: true });
     };
 
     const clearCookies = () => {
@@ -59,10 +71,12 @@ export const AuthProvider = ({ children }: any) => {
             cookies,
             clearCookies,
         }),
-        [cookies]
+        [cookies],
     );
 
-    return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+    return (
+        <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
+    );
 };
 
 export default AuthContext;
