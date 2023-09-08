@@ -3,16 +3,16 @@
 //
 
 import Card from "../Card";
-import {useQueryReservations} from "../../hooks/useQuery/useQueryReservations";
+import { useQueryReservations } from "../../hooks/useQuery/useQueryReservations";
 import Loading from "../Loading";
 import ErrorLoad from "../ErrorLoad";
 
 const CardCounter = (props: any) => {
     //
-    const {queryString, title, color} = props;
+    const { queryString, title, color } = props;
     //
-    const {queryReservationsByStatus} = useQueryReservations();
-    const {isError, isLoading, data} = queryReservationsByStatus(queryString);
+    const { queryReservationsByStatus } = useQueryReservations();
+    const { isError, isLoading, data } = queryReservationsByStatus(queryString);
     //
 
     if (isLoading) {
@@ -24,12 +24,12 @@ const CardCounter = (props: any) => {
     }
 
     return (
-        <Card className="overflow-hidden p-0 h-24 flex flex-col items-center bg-white border border-gray-200">
+        <Card className="flex h-24 flex-col items-center overflow-hidden border border-gray-200 bg-white p-0">
             <div className="w-28">
                 <span
-                    className={`absolute -left-24 -inset-y-12 w-48 h-48 rounded-full bg-${color}-500 flex justify-center items-center`}
+                    className={`absolute -inset-y-12 -left-24 h-48 w-48 rounded-full bg-${color}-500 flex items-center justify-center`}
                 >
-                    <span className="ml-20 text-white font-bold text-xl text-center">{data[0]?.count}</span>
+                    <span className="ml-20 text-center text-xl font-bold text-white">{data[0]?.count}</span>
                 </span>
             </div>
             <div className="flex h-full w-full items-center pl-28 leading-normal">

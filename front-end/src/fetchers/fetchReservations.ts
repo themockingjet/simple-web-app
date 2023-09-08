@@ -42,11 +42,18 @@ export function fetchReservations() {
         return response;
     };
 
+    const findReservationByAccountId = async (id: number) => {
+        //
+        const response = await axiosPrivate.get("/api/reservation/user/" + id).then((res) => res.data);
+        return response;
+    };
+
     return {
         findTableReservations,
         findAllReservations,
         findReservationByDate,
         findReservationsByRange,
         findReservationByStatus,
+        findReservationByAccountId,
     };
 }

@@ -2,7 +2,7 @@
 //
 //
 
-import {Navigate, Routes, Route} from "react-router-dom";
+import { Navigate, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import RequireAuth from "./components/RequireAuth";
 import Anonymous from "./components/Anonymous";

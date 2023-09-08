@@ -9,7 +9,9 @@ const Layout = () => {
     return (
         <>
             <Header />
-            <Outlet />
+            <main className="container mx-auto flex min-h-[calc(100vh-3rem)] flex-col lg:min-h-[calc(100vh-3.5rem)]">
+                <Outlet />
+            </main>
         </>
     );
 };
