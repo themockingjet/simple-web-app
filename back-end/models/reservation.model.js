@@ -76,7 +76,6 @@ exports.findReservationByStatus = async (status, callback) => {
 	//
 	db.query("SELECT COUNT(id) as count FROM reservations WHERE status = ?", [status], (error, result) => {
 		//
-		console.log(error);
 		if (error) {
 			callback(error, null);
 		} else {

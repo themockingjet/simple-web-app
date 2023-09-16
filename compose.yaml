@@ -1,0 +1,87 @@
+services:
+    db:
+        image: mysql:8.1.0
+        container_name: mysql_c2
+        command: --default-authentication-plugin=caching_sha2_password
+        restart: unless-stopped
+        env_file: ./.env
+        environment:
+            MYSQL_ROOT_PASSWORD: $MYSQLDB_ROOT_PASSWORD
+            MYSQL_DATABASE: $MYSQLDB_DATABASE
+        ports:
+            - $MYSQLDB_LOCAL_PORT:$MYSQLDB_DOCKER_PORT
+        volumes:
+            - app:/var/lib/mysql
+            - ./database/init:/docker-entrypoint-initdb.d
+        healthcheck:
+            test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u$MYSQLDB_USER", "-p$MYSQLDB_ROOT_PASSWORD"]
+            interval: 1s
+            timeout: 5s
+            retries: 20
+        networks:
+            - node-network
+    backend:
+        depends_on:
+            db:
+                condition: service_healthy
+        container_name: backend_c
+        build: ./back-end
+        volumes:
+            # - ./back-end:/app
+            - app:/usr/src/app/node_modules
+        restart: on-failure
+        env_file: ./.env
+        # ports:
+        #     - "3000:3000"
+        environment:
+            - DB_HOST=db
+            - DB_USER=$MYSQLDB_USER
+            - DB_PASSWORD=$MYSQLDB_ROOT_PASSWORD
+            - DB_NAME=$MYSQLDB_DATABASE
+            - DB_PORT=$MYSQLDB_DOCKER_PORT
+            - TOKEN_SECRET=$TOKEN_SECRET
+            - TOKEN_REFRESH=$TOKEN_REFRESH
+            - PORT=$NODE_DOCKER_PORT
+        networks:
+            - node-network
+        stdin_open: true
+        tty: true
+
+    frontend:
+        depends_on:
+            - backend
+        container_name: frontend_c
+        build: ./front-end
+        volumes:
+            # - ./front-end:/app
+            - app:/usr/src/app/node_modules
+        restart: unless-stopped
+        # ports:
+        #     - "5173:5173"
+        environment:
+            - REACT_APP_API_URL=http://localhost:$NODE_DOCKER_PORT
+        networks:
+            - node-network
+        stdin_open: true
+        tty: true
+
+    nginx:
+        build:
+            context: nginx
+        container_name: nginx_c
+        restart: always
+        tty: true
+        ports:
+            - "8000:80"
+        networks:
+            - node-network
+        depends_on:
+            - backend
+            - frontend
+
+networks:
+    node-network:
+        driver: bridge
+
+volumes:
+    app:
